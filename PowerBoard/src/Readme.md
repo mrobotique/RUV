@@ -1,4 +1,4 @@
-* Adafruit_MCP23017
+*Adafruit_MCP23017
 https://github.com/adafruit/Adafruit-MCP23017-Arduino-Library
 *** Pin Addressing
 
@@ -21,5 +21,6 @@ Physial Pin # 	Pin Name 	Pin ID
 7 	GPB6 	14
 8 	GPB7 	15
 
-* FastLED Library
+*FastLED Library
 https://github.com/FastLED/FastLED
+**FastLED color reference: http://fastled.io/docs/3.1/struct_c_r_g_b.html
