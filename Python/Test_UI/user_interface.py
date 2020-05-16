@@ -1,14 +1,60 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'new_interface.ui'
+# Form implementation generated from reading ui file 'user_interface.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtSerialPort
+from PyQt5.QtCore import QTimer
+import time
+import json
 
 class Ui_MainWindow(object):
+    def __init__(self):
+        self.icon_ok = "./icons/green-led-on.png"
+        self.icon_nok = "./icons/led-red-on.png"
+        self.icon_uv = "./icons/led-uv.png"
+        self.icon_off = "./icons/led-gray-off.png"
+        self.comm_toggle = False
+        self.sensor_names = ['deadman', 'pir1', 'pir2', 'pir3', 'pir4', 'mag1', 'mag2', 'mag3', 'mag4', 'mag5', 'mag6',
+                             'lamp1', 'lamp2', 'lamp3', 'lamp4', 'lamp5', 'lamp6', 'lamp7', 'lamp8']
+        # fill dict with 1
+        self.data_dict = {self.sensor_names[i]: 0 for i in range(len(self.sensor_names))}
+        self.comm_timeout = 1.3
+        self.comm_last_time = 0
+        self._timer_comm = QTimer(self)
+        self._timer_comm.start(600) # Check every 600ms
+        self._timer_comm.timeout.connect(self.check_comm)
+
+        self.rgb_led = {
+            "r":0,
+            "g":1,
+            "b":2,
+            "w":3,
+        }
+
+        self.operation_mode = {
+            'manual': 0,
+            'auto': 1,
+            'test': 2
+        }
+
+        self.comm_data = {
+            "lamp1": 0,
+            "lamp2": 0,
+            "lamp3": 0,
+            "lamp4": 0,
+            "lamp5": 0,
+            "lamp6": 0,
+            "lamp7": 0,
+            "lamp8": 0,
+            "led_color": self.rgb_led['r'],
+            "led_pwm": 0,
+            "mode": 0
+        }
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(847, 588)
@@ -235,25 +281,25 @@ class Ui_MainWindow(object):
         self.groupBox_5.setFlat(True)
         self.groupBox_5.setCheckable(False)
         self.groupBox_5.setObjectName("groupBox_5")
-        self.pushButton = QtWidgets.QPushButton(self.groupBox_5)
-        self.pushButton.setGeometry(QtCore.QRect(0, 156, 241, 51))
-        self.pushButton.setObjectName("pushButton")
+        self.conf_timer_button = QtWidgets.QPushButton(self.groupBox_5)
+        self.conf_timer_button.setGeometry(QtCore.QRect(0, 156, 241, 51))
+        self.conf_timer_button.setObjectName("conf_timer_button")
         self.lcdNumber = QtWidgets.QLCDNumber(self.groupBox_5)
         self.lcdNumber.setGeometry(QtCore.QRect(170, 80, 61, 41))
         self.lcdNumber.setDigitCount(3)
         self.lcdNumber.setSegmentStyle(QtWidgets.QLCDNumber.Flat)
-        self.lcdNumber.setProperty("intValue", 888)
+        self.lcdNumber.setProperty("intValue", 0)
         self.lcdNumber.setObjectName("lcdNumber")
         self.label_12 = QtWidgets.QLabel(self.groupBox_5)
         self.label_12.setGeometry(QtCore.QRect(170, 60, 61, 17))
         self.label_12.setObjectName("label_12")
-        self.dial = QtWidgets.QDial(self.groupBox_5)
-        self.dial.setGeometry(QtCore.QRect(10, 20, 141, 131))
-        self.dial.setMaximum(180)
-        self.dial.setProperty("value", 0)
-        self.dial.setInvertedAppearance(False)
-        self.dial.setInvertedControls(False)
-        self.dial.setObjectName("dial")
+        self.timer_dial = QtWidgets.QDial(self.groupBox_5)
+        self.timer_dial.setGeometry(QtCore.QRect(10, 20, 141, 131))
+        self.timer_dial.setMaximum(180)
+        self.timer_dial.setProperty("value", 0)
+        self.timer_dial.setInvertedAppearance(False)
+        self.timer_dial.setInvertedControls(False)
+        self.timer_dial.setObjectName("dial")
         self.labelLogo = QtWidgets.QLabel(self.centralwidget)
         self.labelLogo.setGeometry(QtCore.QRect(-20, 20, 261, 251))
         self.labelLogo.setText("")
@@ -303,6 +349,26 @@ class Ui_MainWindow(object):
         self.line_3.raise_()
         self.line.raise_()
         self.groupBox_6.raise_()
+
+        #set buttons callbacks
+        self.commButton.clicked.connect(self.on_toggled)
+        self.timer_dial.valueChanged.connect(self.timer_dial_change)
+        self.lamp_button_1.clicked.connect(self.buttons_cb)
+        self.lamp_button_2.clicked.connect(self.buttons_cb)
+        self.lamp_button_3.clicked.connect(self.buttons_cb)
+        self.lamp_button_4.clicked.connect(self.buttons_cb)
+        self.lamp_button_5.clicked.connect(self.buttons_cb)
+        self.lamp_button_6.clicked.connect(self.buttons_cb)
+        self.lamp_button_7.clicked.connect(self.buttons_cb)
+        self.lamp_button_8.clicked.connect(self.buttons_cb)
+        self.timer_button.clicked.connect(self.buttons_cb)
+        self.conf_timer_button.clicked.connect(self.buttons_cb)
+        self.radio_Led_R.toggled.connect(self.rgb_led_cb)
+        self.radio_Led_G.toggled.connect(self.rgb_led_cb)
+        self.radio_Led_B.toggled.connect(self.rgb_led_cb)
+        self.radioButton_W.toggled.connect(self.rgb_led_cb)
+        self.horizontalSlider_LedPower.valueChanged.connect(self.rgb_led_cb)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 847, 25))
@@ -329,6 +395,7 @@ class Ui_MainWindow(object):
         self.lamp_button_7.setText(_translate("MainWindow", "Opt1"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Puerto Serie"))
         self.commButton.setText(_translate("MainWindow", "Conectar"))
+        self.commButton.setCheckable(True)
         self.groupBox_3.setTitle(_translate("MainWindow", "Sensores "))
         self.label.setText(_translate("MainWindow", "Mag1"))
         self.label_2.setText(_translate("MainWindow", "Mag2"))
@@ -347,7 +414,7 @@ class Ui_MainWindow(object):
         self.radioMode_3.setText(_translate("MainWindow", "Test"))
         self.timer_button.setText(_translate("MainWindow", "Timer Test"))
         self.groupBox_5.setTitle(_translate("MainWindow", "Confi&guracion de timer"))
-        self.pushButton.setText(_translate("MainWindow", "Confirmar"))
+        self.conf_timer_button.setText(_translate("MainWindow", "Confirmar"))
         self.label_12.setText(_translate("MainWindow", "Minutos"))
         self.groupBox_6.setTitle(_translate("MainWindow", "LED Test"))
         self.radio_Led_R.setText(_translate("MainWindow", "Ro&jo"))
@@ -356,3 +423,206 @@ class Ui_MainWindow(object):
         self.radioButton_W.setText(_translate("MainWindow", "Blanco"))
         self.label_14.setText(_translate("MainWindow", "Intensidad"))
 
+    ## Otras funciones no creadas con el qt5 designer
+    @QtCore.pyqtSlot()
+    def receive(self):
+
+        if self.comm_toggle:
+            self.comm_toggle = False
+            self.led_comm.setPixmap(QtGui.QPixmap(self.icon_ok))
+        else:
+            self.comm_toggle = True
+            self.led_comm.setPixmap(QtGui.QPixmap(self.icon_nok))
+
+        while self.serial.canReadLine():
+            self.comm_last_time = time.time()
+            data_txt = self.serial.readLine().data().decode()
+            data_txt = data_txt.rstrip('\r\n')
+            data_json = json.loads(data_txt)
+            # using dictionary comprehension
+            # to convert lists to dictionary
+            self.data_dict = {self.sensor_names[i]: data_json['data'][i] for i in range(len(data_json['data']))}
+            #UPDATE LEDS (Todos en logica inversa por que tiene pull up": si el sensor detecta --> 0)
+            if self.data_dict['deadman'] == 1:
+                self.led_deadman.setPixmap(QtGui.QPixmap(self.icon_nok))
+            else:
+                self.led_deadman.setPixmap(QtGui.QPixmap(self.icon_ok))
+            # Pir Sensors
+            if self.data_dict['pir1'] == 1:
+                self.led_pir_1.setPixmap(QtGui.QPixmap(self.icon_nok))
+            else:
+                self.led_pir_1.setPixmap(QtGui.QPixmap(self.icon_ok))
+
+            if self.data_dict['pir2'] == 1:
+                self.led_pir_2.setPixmap(QtGui.QPixmap(self.icon_nok))
+            else:
+                self.led_pir_2.setPixmap(QtGui.QPixmap(self.icon_ok))
+
+            if self.data_dict['pir3'] == 1:
+                self.led_pir_3.setPixmap(QtGui.QPixmap(self.icon_nok))
+            else:
+                self.led_pir_3.setPixmap(QtGui.QPixmap(self.icon_ok))
+
+            if self.data_dict['pir4'] == 1:
+                self.led_pir_4.setPixmap(QtGui.QPixmap(self.icon_nok))
+            else:
+                self.led_pir_4.setPixmap(QtGui.QPixmap(self.icon_ok))
+
+            # Magnetic Sensors
+            if self.data_dict['mag1'] == 1:
+                self.led_Mag_1.setPixmap(QtGui.QPixmap(self.icon_nok))
+            else:
+                self.led_Mag_1.setPixmap(QtGui.QPixmap(self.icon_ok))
+
+            if self.data_dict['mag2'] == 1:
+                self.led_Mag_2.setPixmap(QtGui.QPixmap(self.icon_nok))
+            else:
+                self.led_Mag_2.setPixmap(QtGui.QPixmap(self.icon_ok))
+
+            if self.data_dict['mag3'] == 1:
+                self.led_Mag_3.setPixmap(QtGui.QPixmap(self.icon_nok))
+            else:
+                self.led_Mag_3.setPixmap(QtGui.QPixmap(self.icon_ok))
+
+            if self.data_dict['mag4'] == 1:
+                self.led_Mag_4.setPixmap(QtGui.QPixmap(self.icon_nok))
+            else:
+                self.led_Mag_4.setPixmap(QtGui.QPixmap(self.icon_ok))
+
+            if self.data_dict['mag5'] == 1:
+                self.led_Mag_5.setPixmap(QtGui.QPixmap(self.icon_nok))
+            else:
+                self.led_Mag_5.setPixmap(QtGui.QPixmap(self.icon_ok))
+
+            if self.data_dict['mag6'] == 1:
+                self.led_Mag_6.setPixmap(QtGui.QPixmap(self.icon_nok))
+            else:
+                self.led_Mag_6.setPixmap(QtGui.QPixmap(self.icon_ok))
+
+            #LAMPARAS (Relevadores) Estos si tienen logica directa 1=on/ 0=off
+            if self.data_dict['lamp1'] == 1:
+                self.led_lamp_1.setPixmap(QtGui.QPixmap(self.icon_uv))
+            else:
+                self.led_lamp_1.setPixmap(QtGui.QPixmap(self.icon_off))
+
+            if self.data_dict['lamp2'] == 1:
+                self.led_lamp_2.setPixmap(QtGui.QPixmap(self.icon_uv))
+            else:
+                self.led_lamp_2.setPixmap(QtGui.QPixmap(self.icon_off))
+
+            if self.data_dict['lamp3'] == 1:
+                self.led_lamp_3.setPixmap(QtGui.QPixmap(self.icon_uv))
+            else:
+                self.led_lamp_3.setPixmap(QtGui.QPixmap(self.icon_off))
+
+            if self.data_dict['lamp4'] == 1:
+                self.led_lamp_4.setPixmap(QtGui.QPixmap(self.icon_uv))
+            else:
+                self.led_lamp_4.setPixmap(QtGui.QPixmap(self.icon_off))
+
+            if self.data_dict['lamp5'] == 1:
+                self.led_lamp_5.setPixmap(QtGui.QPixmap(self.icon_uv))
+            else:
+                self.led_lamp_5.setPixmap(QtGui.QPixmap(self.icon_off))
+
+            if self.data_dict['lamp6'] == 1:
+                self.led_lamp_6.setPixmap(QtGui.QPixmap(self.icon_uv))
+            else:
+                self.led_lamp_6.setPixmap(QtGui.QPixmap(self.icon_off))
+
+            if self.data_dict['lamp7'] == 1:
+                self.led_lamp_7.setPixmap(QtGui.QPixmap(self.icon_uv))
+            else:
+                self.led_lamp_7.setPixmap(QtGui.QPixmap(self.icon_off))
+
+            if self.data_dict['lamp8'] == 1:
+                self.led_lamp_8.setPixmap(QtGui.QPixmap(self.icon_uv))
+            else:
+                self.led_lamp_8.setPixmap(QtGui.QPixmap(self.icon_off))
+
+    @QtCore.pyqtSlot()
+    def send(self):
+        self.serial.write(self.message_le.text().encode())
+
+    @QtCore.pyqtSlot(bool)
+    def on_toggled(self, checked):
+        self.serial = QtSerialPort.QSerialPort(
+            self.port_comboBox.currentText(),
+            baudRate=QtSerialPort.QSerialPort.Baud115200,
+            readyRead=self.receive)
+        self.commButton.setText("Desconectar" if checked else "Conectar")
+
+        if checked:
+            if not self.serial.isOpen():
+                if not self.serial.open(QtCore.QIODevice.ReadWrite):
+                    self.serial.clear()
+                    self.button.setChecked(False)
+        else:
+            self.serial.close()
+            self.led_comm.setPixmap(QtGui.QPixmap(self.icon_off))
+
+    def timer_dial_change(self):
+        self.lcdNumber.display(self.timer_dial.value())
+
+    def rgb_led_cb(self):
+        sender = self.sender().objectName()
+        print(sender)
+        if sender == "horizontalSlider_LedPower":
+            self.comm_data["pwm"] = self.horizontalSlider_LedPower.value()
+        if self.radio_Led_R.isChecked():
+            self.comm_data["led_color"] = self.rgb_led['r']
+        if self.radio_Led_G.isChecked():
+            self.comm_data["led_color"] = self.rgb_led['g']
+        if self.radio_Led_B.isChecked():
+            self.comm_data["led_color"] = self.rgb_led['b']
+        if self.radioButton_W.isChecked():
+            self.comm_data["led_color"] = self.rgb_led['w']
+        print(self.comm_data)
+
+
+    def check_comm(self):
+        if (time.time() - self.comm_last_time) > self.comm_timeout :
+            # Todos los leds a negro
+            self.led_deadman.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_pir_1.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_pir_2.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_pir_3.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_pir_4.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_Mag_1.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_Mag_2.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_Mag_3.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_Mag_4.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_Mag_5.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_Mag_6.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_lamp_1.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_lamp_2.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_lamp_3.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_lamp_4.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_lamp_5.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_lamp_6.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_lamp_7.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_lamp_8.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.led_comm.setPixmap(QtGui.QPixmap(self.icon_off))
+
+    def buttons_cb(self):
+        sender = self.sender().objectName()
+        for i in range(1, 9): #Lee todos el estado de las lamparas desde el mircro y pone el estado inverso
+                              # en el sring que se enviara para actualizar las salidas del microcontrolador
+            sender_name = "lamp_button_" + str(i)
+            key_name = "lamp" + str(i)
+            if sender == sender_name:
+                if self.data_dict[key_name] == 1:
+                    self.comm_data[key_name] = 0
+                else:
+                    self.comm_data[key_name] = 1
+
+        if sender == "conf_timer_button":
+            #             ToDo: Enviar la configuracion de tiempo para el timer de la lampara
+            #             ToDo: Este valor sera guardado en la EEPROM del arduino y es el tiempo
+            #             ToDo: que durara prendida la lampara cuando se lance el automatico
+            time_to_send = self.lcdNumber.value()
+            print(time_to_send)
+
+        if sender == "timer_button":
+#             ToDo: Enviar al micro el comando de start/stop para el timer
+            print("timer_button: Funcion no implementada")

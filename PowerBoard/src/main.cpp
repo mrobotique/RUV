@@ -2,28 +2,33 @@
 #include <Wire.h>
 #include "Adafruit_MCP23017.h"
 #include "HAL.h"
-#include <FastLED.h>
 #include <SoftwareSerial.h>
 #include "uvsafe_read.h"
 #include "uvsafe_write.h"
 #include "uvsafe_comm.h"
+#include "uvsafe_rgb_leds.h"
 
 Adafruit_MCP23017 gpio;
 SoftwareSerial GUISerial(2, 3); // RX, TX
+DataSender SerialDataSender(sensor_state);
+RGBLeds LedsIndicadores(mode_manual);
 
 void setup() {
   init_gpio(gpio);
   Serial.begin(115200); //Regular serial port -- Terminal/debug/program
   GUISerial.begin(115200); //Serial port for GUI
+  operation_mode = mode_manual;
   }
 
 void loop() {
   // put your main code here, to run repeatedly:
   sensor_state = read_sensors(sensor_state, gpio);
   chenille_test(gpio);
+  LedsIndicadores.Update(operation_mode,sensor_state);
   //print_sensor_state(sensor_state);
-  send_data(sensor_state);
-  delay(100);/*
+  SerialDataSender.Update(sensor_state);
+
+  /*
   // Turn the LED on, then pause
   for (int i=0;i<=6;i++){
     leds[i] = CRGB::Purple;

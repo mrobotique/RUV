@@ -15,12 +15,12 @@ void write_lamps(LAMP_STRUCT lamp_state, Adafruit_MCP23017 gpio){
 
 void chenille_test(Adafruit_MCP23017 gpio){
   static int i = 0;
-  for (int j=0; j<=8; j++){
+  for (int j=0; j<=7; j++){
     gpio.digitalWrite(j, 0);
   }
   gpio.digitalWrite(i, 1);
   i++;
-  if(i>8){
+  if(i>7){
     i=0;
   }
 }

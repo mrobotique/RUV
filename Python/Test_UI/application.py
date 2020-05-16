@@ -4,8 +4,8 @@ import sys
 import user_interface
 import glob
 import serial
-
 global form
+
 
 class ExampleApp(QtWidgets.QMainWindow, user_interface.Ui_MainWindow):
     def __init__(self, parent=None):
@@ -13,11 +13,13 @@ class ExampleApp(QtWidgets.QMainWindow, user_interface.Ui_MainWindow):
         self.setupUi(self)
         self.setFixedSize(847, 588)
 
+
 def button1_action():
     if form.lcdMag_1.value() == 0:
         form.lcdMag_1.display(1)
     else:
         form.lcdMag_1.display(0)
+
 
 def serial_ports():
     """ Lists serial port names
@@ -47,12 +49,13 @@ def serial_ports():
             pass
     return result
 
+
 def setup_callbacks():
+
 
     for port in serial_ports():
         print(port)
         form.port_comboBox.addItem(port)
-
     pass
 
 

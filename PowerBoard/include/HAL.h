@@ -8,6 +8,19 @@ Aguascalientes, Mexico. Mayo 2020***/
 #include <Arduino.h>
 #include "FastLED.h"
 
+//operation modes
+enum uvs_mode{
+  mode_auto,
+  mode_manual,
+  mode_test
+} operation_mode;
+
+//Timer modes
+enum timer_mode{
+  init_sequence,
+  running
+};
+
 //LED TypicalLEDStrip
 #define LED_PIN     7
 #define NUM_LEDS    6
