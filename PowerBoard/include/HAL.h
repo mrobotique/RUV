@@ -21,7 +21,9 @@ CRGB leds[NUM_LEDS]; //Instance
 #define PIR3_Pin 12
 #define PIR4_Pin 13
 //Deadman switch
-#define DEADMAN_Pin 7
+#define DEADMAN_Pin 8
+//Auto switch
+#define AUTO_Pin 12
 
 //Relay outputs
 //Connected to the MCP23017
@@ -64,7 +66,7 @@ struct SENSOR_STRUCT{
   int lamp_6;
   int lamp_7;
   int lamp_8;
-};
+} sensor_state;
 
 //Struct outputs
 struct LAMP_STRUCT{
@@ -76,7 +78,7 @@ struct LAMP_STRUCT{
   int lamp_6;
   int lamp_7;
   int lamp_8;
-};
+}lamp_state;
 
 //Prototypes
 void init_gpio(Adafruit_MCP23017 gpio);
@@ -94,6 +96,11 @@ gpio.pinMode(LAMP5, OUTPUT);
 gpio.pinMode(LAMP6, OUTPUT);
 gpio.pinMode(LAMP7, OUTPUT);
 gpio.pinMode(LAMP8, OUTPUT);
+//turn off all the gpios*/
+for (int i=0; i<=8;i++){
+  gpio.digitalWrite(i,0);
+}
+
 //Inputs
 gpio.pinMode(MAGNETIC1, INPUT);
 gpio.pullUp(MAGNETIC1, HIGH);  // turn on a 100K pullup internally
