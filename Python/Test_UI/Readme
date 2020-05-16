@@ -1,0 +1,5 @@
+Para lanzar qt designer 
+mro@raspgiga:/usr/lib/x86_64-linux-gnu/qt5/bin/./designer
+
+para convertir el .ui en python 
+pyuic5 new_interface.ui -o user_interface.py
