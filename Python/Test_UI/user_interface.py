@@ -10,6 +10,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtSerialPort
 from PyQt5.QtCore import QTimer
 import time
 import json
+import sys
+import glob
+import serial
 
 class Ui_MainWindow(object):
     def __init__(self):
@@ -560,6 +563,10 @@ class Ui_MainWindow(object):
         else:
             self.serial.close()
             self.led_comm.setPixmap(QtGui.QPixmap(self.icon_off))
+            self.port_comboBox.clear()
+            for port in self.serial_ports():
+                self.port_comboBox.addItem(port)
+
 
     def timer_dial_change(self):
         self.lcdNumber.display(self.timer_dial.value())
@@ -579,6 +586,33 @@ class Ui_MainWindow(object):
             self.comm_data["led_color"] = self.rgb_led['w']
         print(self.comm_data)
 
+    def serial_ports(self):
+        """ Lists serial port names
+
+            :raises EnvironmentError:
+                On unsupported or unknown platforms
+            :returns:
+                A list of the serial ports available on the system
+        """
+        if sys.platform.startswith('win'):
+            ports = ['COM%s' % (i + 1) for i in range(256)]
+        elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+            # this excludes your current terminal "/dev/tty"
+            ports = glob.glob('/dev/tty[A-Za-z]*')
+        elif sys.platform.startswith('darwin'):
+            ports = glob.glob('/dev/tty.*')
+        else:
+            raise EnvironmentError('Unsupported platform')
+
+        result = []
+        for port in ports:
+            try:
+                s = serial.Serial(port)
+                s.close()
+                result.append(port)
+            except (OSError, serial.SerialException):
+                pass
+        return result
 
     def check_comm(self):
         if (time.time() - self.comm_last_time) > self.comm_timeout :

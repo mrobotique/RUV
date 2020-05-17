@@ -12,6 +12,7 @@ Adafruit_MCP23017 gpio;
 SoftwareSerial GUISerial(2, 3); // RX, TX
 DataSender SerialDataSender(sensor_state);
 RGBLeds LedsIndicadores(mode_manual);
+ReadSensors sensors(sensor_state, gpio);
 
 void setup() {
   init_gpio(gpio);
@@ -22,11 +23,11 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  sensor_state = read_sensors(sensor_state, gpio);
-  chenille_test(gpio);
-  //print_sensor_state(sensor_state);
+  sensor_state = sensors.read_sensors();
   SerialDataSender.Update(sensor_state);
-
+  chenille_test(gpio);
+  LedsIndicadores.Update(operation_mode, sensor_state);
+  //sensors.print_sensor_state(sensor_state);
   /*
   // Turn the LED on, then pause
   for (int i=0;i<=6;i++){
