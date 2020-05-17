@@ -2,7 +2,11 @@
 HAL: Hardware Abstraction Layer
 by: MRO for IWI
 Todos los derechos reservados
-Aguascalientes, Mexico. Mayo 2020***/
+Aguascalientes, Mexico. Mayo 2020
+
+requiere
+https://github.com/cosmikwolf/Bounce2mcp.git
+***/
 
 #include "Adafruit_MCP23017.h"
 #include <Arduino.h>
@@ -139,5 +143,4 @@ pinMode(DEADMAN_Pin, INPUT_PULLUP);
 
 //LED Strip  WS2812B
 FastLED.addLeds<WS2812B,LED_PIN,EOrder::GRB>(leds, NUM_LEDS);
-
 }

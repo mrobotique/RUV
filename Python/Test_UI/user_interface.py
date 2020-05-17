@@ -556,7 +556,7 @@ class Ui_MainWindow(object):
             if not self.serial.isOpen():
                 if not self.serial.open(QtCore.QIODevice.ReadWrite):
                     self.serial.clear()
-                    self.button.setChecked(False)
+                    self.commButton.setChecked(False)
         else:
             self.serial.close()
             self.led_comm.setPixmap(QtGui.QPixmap(self.icon_off))

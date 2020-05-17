@@ -24,7 +24,6 @@ void loop() {
   // put your main code here, to run repeatedly:
   sensor_state = read_sensors(sensor_state, gpio);
   chenille_test(gpio);
-  LedsIndicadores.Update(operation_mode,sensor_state);
   //print_sensor_state(sensor_state);
   SerialDataSender.Update(sensor_state);
 
