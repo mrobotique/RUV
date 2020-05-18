@@ -1,6 +1,6 @@
 class Debounce {
     int ledState = HIGH;         // the current state of the output pin
-    int buttonState;             // the current reading from the input pin
+    int buttonState = -1;             // the current reading from the input pin
     int lastButtonState = LOW;   // the previous reading from the input pin
 
     // the following variables are unsigned longs because the time, measured in
@@ -56,7 +56,7 @@ class ReadSensors {
     Debounce pir_deb_3 = Debounce(PirDebouncingTime);
     Debounce pir_deb_4 = Debounce(PirDebouncingTime);
 
-    Debounce deadman_deb = Debounce(PirDebouncingTime);
+    Debounce deadman_deb = Debounce(DeadmanDebouncingTime);
 
   public:
     ReadSensors(SENSOR_STRUCT _sensor_state, Adafruit_MCP23017 _gpio) {

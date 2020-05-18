@@ -11,11 +11,14 @@ https://github.com/cosmikwolf/Bounce2mcp.git
 #include "Adafruit_MCP23017.h"
 #include <Arduino.h>
 #include "FastLED.h"
+#include "ClickButton.h"
 
 //operation modes
 enum uvs_mode{
-  mode_auto,
+  mode_auto_on,
+  mode_auto_init,
   mode_manual,
+  mode_manual_push,
   mode_test
 } operation_mode;
 
@@ -36,7 +39,7 @@ CRGB leds[NUM_LEDS]; //Instance
 #define PIR1_Pin 10
 #define PIR2_Pin 11
 #define PIR3_Pin 12
-#define PIR4_Pin 13
+#define PIR4_Pin 14
 //Deadman switch
 #define DEADMAN_Pin 8
 //Auto switch
@@ -96,6 +99,11 @@ struct LAMP_STRUCT{
   int lamp_7;
   int lamp_8;
 }lamp_state;
+
+//The start button is kind of special so,
+//It is intialized in a sightly different way
+ClickButton auto_button(AUTO_Pin, LOW, CLICKBTN_PULLUP);
+
 
 //Prototypes
 void init_gpio(Adafruit_MCP23017 gpio);

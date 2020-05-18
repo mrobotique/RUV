@@ -7,11 +7,14 @@
 #include "uvsafe_write.h"
 #include "uvsafe_comm.h"
 #include "uvsafe_rgb_leds.h"
+#include "uvsafe_safety.h"
+#include "uvsafe_user_button.h"
+#include "uvsafe_manual.h"
 
 Adafruit_MCP23017 gpio;
 SoftwareSerial GUISerial(2, 3); // RX, TX
 DataSender SerialDataSender(sensor_state);
-RGBLeds LedsIndicadores(mode_manual);
+RGBLeds LedsIndicadores(mode_manual); //inicializa siempre en manual
 ReadSensors sensors(sensor_state, gpio);
 
 void setup() {
@@ -25,25 +28,11 @@ void loop() {
   // put your main code here, to run repeatedly:
   sensor_state = sensors.read_sensors();
   SerialDataSender.Update(sensor_state);
-  chenille_test(gpio);
+  //chenille_test(gpio);
   LedsIndicadores.Update(operation_mode, sensor_state);
-  //sensors.print_sensor_state(sensor_state);
-  /*
-  // Turn the LED on, then pause
-  for (int i=0;i<=6;i++){
-    leds[i] = CRGB::Purple;
-    }
+  user_button_update(LedsIndicadores);
+  safety_functions();
+  lamparas_manual(gpio);
+  delay(10); //Para no atascar el pueto serie
 
-  for(int i=5;i<=255;i++){
-    //leds[i] = CRGB::Purple;
-      //leds[i] = CRGB::Black;
-      FastLED.show(i);
-      delay(10);}
-
-      //leds[3] = CRGB::Black;
-  for(int i=255;i>=5;i--){
-    //leds[i] = CRGB::Purple;
-    FastLED.show(i);
-    delay(10);
-    }*/
 }
