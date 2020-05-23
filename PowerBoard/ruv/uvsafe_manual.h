@@ -1,10 +1,3 @@
-/*
-*  by: MRO for IWI
-*  Todos los derechos reservados
-*  Aguascalientes, Mexico. Mayo 2020
-*/
-
-
 void lamparas_manual(Adafruit_MCP23017 gpio){
   if((operation_mode == mode_manual) || (operation_mode == mode_manual_push)) {
     if(sensor_state.deadman_sw == 0){

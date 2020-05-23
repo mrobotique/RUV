@@ -1,10 +1,3 @@
-/*
-*  by: MRO for IWI
-*  Todos los derechos reservados
-*  Aguascalientes, Mexico. Mayo 2020
-*/
-
-
 #include <Arduino.h>
 #include <Wire.h>
 #include "Adafruit_MCP23017.h"
@@ -17,17 +10,12 @@
 #include "uvsafe_safety.h"
 #include "uvsafe_user_button.h"
 #include "uvsafe_manual.h"
-#include "uvsafe_time.h"
 
 Adafruit_MCP23017 gpio;
 SoftwareSerial GUISerial(2, 3); // RX, TX
 DataSender SerialDataSender(sensor_state);
 RGBLeds LedsIndicadores(mode_manual); //inicializa siempre en manual
 ReadSensors sensors(sensor_state, gpio);
-
-void testt (void);
-
-Countdown timerk(10, testt);
 
 
 
@@ -37,33 +25,22 @@ void setup() {
   Serial.begin(115200); //Regular serial port -- Terminal/debug/program
   GUISerial.begin(115200); //Serial port for GUI
   operation_mode = mode_manual;
-    timerk.start();
 
   }
-
-
 
 void loop() {
   // put your main code here, to run repeatedly:
   sensor_state = sensors.read_sensors();
+  sensors.print_sensor_state();
   //SerialDataSender.Update(sensor_state);
-  //chenille_test(gpio);
+  chenille_test(gpio);
   LedsIndicadores.Update(operation_mode, sensor_state);
-  user_button_update(LedsIndicadores);
+  //user_button_update(LedsIndicadores);
   safety_functions();
-  lamparas_manual(gpio);
-  delay(10); //Para no atascar el pueto serie
-
-  if ((sensor_state.pir_1 == 0) and (timerk.is_running())){
-    timerk.pause();
-  }
-  else if (timerk.is_running()) {
-    timerk.start();
-  }
-  timerk.run();
+  //lamparas_manual(gpio);
+  uvsafe_timer.run(); //tick para el timer
+  delay(300); //Debug para los relays
 
 }
 
-void testt (void){
-  Serial.println("*****");
-}
+void tUpComplete(void){}

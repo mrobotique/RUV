@@ -12,7 +12,10 @@ https://github.com/cosmikwolf/Bounce2mcp.git
 #include <Arduino.h>
 #include "FastLED.h"
 #include "ClickButton.h"
+#include "Countimer.h"
 
+//timer
+Countimer uvsafe_timer;
 unsigned long tiempo_exposicion = 10; // un minuto para test
 //operation modes
 enum uvs_mode{

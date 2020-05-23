@@ -1,10 +1,3 @@
-/*
-*  by: MRO for IWI
-*  Todos los derechos reservados
-*  Aguascalientes, Mexico. Mayo 2020
-*/
-
-
 void user_button_update(RGBLeds LedsIndicadores) {
   auto_button.Update();
   safety_functions();

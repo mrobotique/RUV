@@ -1,11 +1,4 @@
 
-/*
-*  by: MRO for IWI
-*  Todos los derechos reservados
-*  Aguascalientes, Mexico. Mayo 2020
-*/
-
-
 #include <FastLED.h>
 
 //Define la posicion del primer led por segmento
@@ -118,11 +111,18 @@ public:
           operation_mode = mode_auto_on;
           last_millis = millis();
           //Asegurarse que el timer esta parado
+
+          //load the time
+           //UVtimer.setCounter(Horas, Minutos, Segundos, UVtimer.COUNT_DOWN, onComplete);
+          //uvsafe_timer.setCounter(0, tiempo_exposicion, 0, uvsafe_timer.COUNT_DOWN, uvsafe_timer_Complete);
+          uvsafe_timer.setCounter(0, 0, 10, uvsafe_timer.COUNT_DOWN, uvsafe_timer_Complete);
+          uvsafe_timer.start(); //Activa la cuenta regresiva
       }
   }
 }
 
   void auto_pattern(){
+    uvsafe_timer.run();          
     if ((millis() - last_millis) > fadeDelay){
       last_millis = millis();
 
@@ -258,4 +258,5 @@ public:
 void uvsafe_timer_Complete(void){
   Serial.print("timer end");
   operation_mode = mode_manual;
+  uvsafe_timer.stop();
 }

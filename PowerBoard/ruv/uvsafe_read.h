@@ -1,9 +1,3 @@
-/*
-*  by: MRO for IWI
-*  Todos los derechos reservados
-*  Aguascalientes, Mexico. Mayo 2020
-*/
-
 class Debounce {
     int ledState = HIGH;         // the current state of the output pin
     int buttonState = -1;             // the current reading from the input pin

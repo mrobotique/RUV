@@ -1,10 +1,3 @@
-/*
-*  by: MRO for IWI
-*  Todos los derechos reservados
-*  Aguascalientes, Mexico. Mayo 2020
-*/
-
-
 #include <ArduinoJson.h>
 
 class DataSender{

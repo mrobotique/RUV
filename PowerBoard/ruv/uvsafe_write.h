@@ -1,10 +1,3 @@
-/*
-*  by: MRO for IWI
-*  Todos los derechos reservados
-*  Aguascalientes, Mexico. Mayo 2020
-*/
-
-
 void write_lamps(LAMP_STRUCT lamp_state, Adafruit_MCP23017 gpio){
   /*
   Esta funcion recibe el estado actual de las lamparas y lo transmite
