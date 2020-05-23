@@ -13,7 +13,6 @@ https://github.com/cosmikwolf/Bounce2mcp.git
 #include "FastLED.h"
 #include "ClickButton.h"
 
-unsigned long tiempo_exposicion = 10; // un minuto para test
 //operation modes
 enum uvs_mode{
   mode_auto_on,
