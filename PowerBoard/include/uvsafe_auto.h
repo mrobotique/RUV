@@ -8,7 +8,7 @@
 //Prototipo
 void uvsafe_timer_Complete(void);
 //Instancia de timer
-Countdown expo_timer(600, uvsafe_timer_Complete);  //600 seg (10min) para probar
+Countdown expo_timer(300, uvsafe_timer_Complete);  //300 seg (5min) para probar
 int pir_status = 0;
 
 void lamparas_auto(Adafruit_MCP23017 gpio){
