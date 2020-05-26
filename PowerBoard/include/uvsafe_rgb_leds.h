@@ -130,12 +130,12 @@ void auto_pattern(){
 
                 for (int i=seg0; i<seg6; i++) {
                         if(sensor_state.pir_status != 0) {
-                                //Si los PIR estan  ok entonces es morado
-                                leds[i] = CRGB::Purple;
-                        }
-                        else{
                                 //Si los PIR detectan a alguien, entonces amarillo
                                 leds[i] = CRGB::OrangeRed;
+                        }
+                        else{
+                                //Si los PIR estan  ok entonces es morado
+                                leds[i] = CRGB::Purple;
                         }
                 }
 
