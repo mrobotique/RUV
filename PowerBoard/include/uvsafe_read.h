@@ -46,9 +46,9 @@ int Update(int _reading) {
 class ReadSensors {
 SENSOR_STRUCT sensor_state;
 Adafruit_MCP23017 gpio;
-int MagneticDebouncingTime = 800;
-int PirDebouncingTime = 300;
-int DeadmanDebouncingTime = 1000;
+int MagneticDebouncingTime = 800; //ms
+int PirDebouncingTime = 100; //ms
+int DeadmanDebouncingTime = 1000; //ms
 
 Debounce mag_deb_1 = Debounce(MagneticDebouncingTime);
 Debounce mag_deb_2 = Debounce(MagneticDebouncingTime);
