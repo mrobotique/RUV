@@ -32,6 +32,7 @@ void setup() {
         Serial.begin(115200); //Regular serial port -- Terminal/debug/program
         GUISerial.begin(115200); //Serial port for GUI
         operation_mode = mode_manual;
+        delay(300); //for system stabilization
 }
 
 

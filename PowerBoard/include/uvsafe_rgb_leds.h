@@ -124,11 +124,19 @@ void init_pattern(){
 }
 
 void auto_pattern(){
+
         if ((millis() - last_millis) > fadeDelay) {
                 last_millis = millis();
 
                 for (int i=seg0; i<seg6; i++) {
-                        leds[i] = CRGB::Purple;
+                        if(sensor_state.pir_status != 0) {
+                                //Si los PIR estan  ok entonces es morado
+                                leds[i] = CRGB::Purple;
+                        }
+                        else{
+                                //Si los PIR detectan a alguien, entonces amarillo
+                                leds[i] = CRGB::OrangeRed;
+                        }
                 }
 
                 FastLED.show(intensity);

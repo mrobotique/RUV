@@ -81,6 +81,7 @@ SENSOR_STRUCT read_sensors() {
         sensor_state.pir_2 = pir_deb_2.Update(digitalRead(PIR2_Pin));
         sensor_state.pir_3 = pir_deb_3.Update(digitalRead(PIR3_Pin));
         sensor_state.pir_4 = pir_deb_4.Update(digitalRead(PIR4_Pin));
+        sensor_state.pir_status = sensor_state.pir_1 * sensor_state.pir_2 * sensor_state.pir_3 * sensor_state.pir_4;
         sensor_state.magnetic_1 = mag_deb_1.Update(gpio.digitalRead(MAGNETIC1));
         sensor_state.magnetic_2 = mag_deb_2.Update(gpio.digitalRead(MAGNETIC2));
         sensor_state.magnetic_3 = mag_deb_3.Update(gpio.digitalRead(MAGNETIC3));

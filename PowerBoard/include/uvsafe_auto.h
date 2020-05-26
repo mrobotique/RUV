@@ -9,7 +9,7 @@
 void uvsafe_timer_Complete(void);
 //Instancia de timer
 Countdown expo_timer(300, uvsafe_timer_Complete);  //300 seg (5min) para probar
-int pir_status = 0;
+
 
 void lamparas_auto(Adafruit_MCP23017 gpio){
         if (operation_mode == mode_auto_on) {
@@ -18,8 +18,7 @@ void lamparas_auto(Adafruit_MCP23017 gpio){
                         expo_timer.start();
                 }
                 expo_timer.run();
-                pir_status = sensor_state.pir_1 * sensor_state.pir_2 * sensor_state.pir_3 * sensor_state.pir_4;
-                if (pir_status != 1) {
+                if (sensor_state.pir_status != 1) {
                         expo_timer.pause();
                         lamp_state.lamp_1 = 0;
                         lamp_state.lamp_2 = 0;

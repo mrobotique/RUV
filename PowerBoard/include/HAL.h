@@ -72,6 +72,7 @@ struct SENSOR_STRUCT{
   int pir_2;
   int pir_3;
   int pir_4;
+  int pir_status;
   int magnetic_1;
   int magnetic_2;
   int magnetic_3;
