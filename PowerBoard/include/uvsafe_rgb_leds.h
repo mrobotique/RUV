@@ -11,12 +11,12 @@
 
 //Define la posicion del primer led por segmento
 const int seg0 = 0;
-const int seg1 = 1;
-const int seg2 = 2;
-const int seg3 = 3;
-const int seg4 = 4;
-const int seg5 = 5;
-const int seg6 = 6;
+const int seg1 = 3;
+const int seg2 = 6;
+const int seg3 = 9;
+const int seg4 = 12;
+const int seg5 = 15;
+const int seg6 = 18;
 
 int previous_mode;
 int LedCount = 0;
@@ -110,7 +110,7 @@ void init_pattern(){
                 last_millis = millis();
                 if (LedCount<seg6) {
                         leds[LedCount] = CRGB::DeepSkyBlue;
-                        FastLED.show(max_intensity);
+                        FastLED.show(int(max_intensity/3.0)); //estaba muy intenso
                 }
                 LedCount++;
                 if (LedCount > seg6) {
@@ -251,7 +251,7 @@ void confirm_push(bool on){
                 for (int i=seg0; i<seg6; i++) {
                         leds[i] = CRGB::DeepPink;
                 }
-                FastLED.show(max_intensity);
+                FastLED.show(int(max_intensity/3.0)); //demasiado intenso
         }
         else
         {

@@ -30,7 +30,7 @@ enum timer_mode{
 
 //LED TypicalLEDStrip
 #define LED_PIN     7
-#define NUM_LEDS    6
+#define NUM_LEDS    18
 #define BRIGHTNESS  32
 CRGB leds[NUM_LEDS]; //Instance
 
