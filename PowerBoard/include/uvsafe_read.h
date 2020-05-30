@@ -73,9 +73,10 @@ int Update(int _reading) {
 class ReadSensors {
 SENSOR_STRUCT sensor_state;
 Adafruit_MCP23017 gpio;
-int MagneticDebouncingTime = 800; //ms
-int PirDebouncingTime = 100; //ms
-int DeadmanDebouncingTime = 1000; //ms
+//Tiempos definidos en uvsafe_user_definitions
+int MagneticDebouncingTime = MAGNETIC_DEBOUNCE; //ms
+int PirDebouncingTime = PIR_DEBOUNCE; //ms
+int DeadmanDebouncingTime = DEADMAN_DEBOUNCE; //ms
 
 Debounce mag_deb_1 = Debounce(MagneticDebouncingTime);
 Debounce mag_deb_2 = Debounce(MagneticDebouncingTime);
@@ -91,7 +92,7 @@ Debounce pir_deb_4 = Debounce(PirDebouncingTime);
 
 Debounce deadman_deb = Debounce(DeadmanDebouncingTime);
 
-After_Pir after_pir = After_Pir(30000);
+After_Pir after_pir = After_Pir(AFTER_PIR);
 
 public:
 ReadSensors(SENSOR_STRUCT _sensor_state, Adafruit_MCP23017 _gpio) {

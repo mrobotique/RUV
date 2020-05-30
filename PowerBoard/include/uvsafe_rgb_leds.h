@@ -8,23 +8,15 @@
 
 #include <FastLED.h>
 #include "uvsafe_time.h"
-
-//Define la posicion del primer led por segmento
-const int seg0 = 0;
-const int seg1 = 3;
-const int seg2 = 6;
-const int seg3 = 9;
-const int seg4 = 12;
-const int seg5 = 15;
-const int seg6 = 18;
+//Las definiciones por led por segemnto estan declaradas en uvsafe_user_definitions.h
 
 int previous_mode;
 int LedCount = 0;
 //Delay para el fade in fade out
 unsigned long fadeDelay = 15; //en mS
 unsigned long last_millis = millis();
-int max_intensity = 164;
-int min_intensity = 10;
+// max_intensity y min_intensity estan definidos en uvsafe_user_definitions
+
 int intensity = min_intensity; //intensity no puede ser menor que min intensity
                                //en caso de que se necesite una intensidad menor
                                //se puede usar pero al salir de la condicion donde se necesita
@@ -37,7 +29,7 @@ class RGBLeds {
 int current_mode; //Modo en el que se encuentra el uvs
 unsigned long previousMillis;
 //tiempo de inicio (cuenta regresiva)
-unsigned long init_time = 60000; //1 minuto
+unsigned long init_time = TIEMPO_INICIO; //definido en uvsafe_user_definitions
 //tiempo por segmento = tiempo de inicio / total de leds
 unsigned long init_time_segment = int (init_time/seg6);
 

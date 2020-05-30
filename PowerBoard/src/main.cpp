@@ -3,8 +3,7 @@
  *  Todos los derechos reservados
  *  Aguascalientes, Mexico. Mayo 2020
  */
-
-
+#include <uvsafe_user_definitions.h>
 #include <Arduino.h>
 #include <Wire.h>
 #include "Adafruit_MCP23017.h"
@@ -18,6 +17,7 @@
 #include "uvsafe_user_button.h"
 #include "uvsafe_manual.h"
 #include "uvsafe_auto.h"
+
 
 
 Adafruit_MCP23017 gpio;
