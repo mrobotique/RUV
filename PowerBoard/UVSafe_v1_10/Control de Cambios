@@ -1,0 +1,4 @@
+V1.1: 
+- Controla 18 leds (controlaba 6)
+- Cambio de intensidad de los leds en la secuencia de inicializacion (menos potencia)
+- Cambio de intensidad de los leds en el click largo (menos potencia)

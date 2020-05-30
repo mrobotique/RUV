@@ -19,8 +19,7 @@ enum uvs_mode{
   mode_auto_init,
   mode_manual,
   mode_manual_push,
-  mode_test,
-  mode_pir
+  mode_test
 } operation_mode;
 
 //Timer modes
@@ -74,7 +73,6 @@ struct SENSOR_STRUCT{
   int pir_3;
   int pir_4;
   int pir_status;
-  int pir_transition;
   int magnetic_1;
   int magnetic_2;
   int magnetic_3;

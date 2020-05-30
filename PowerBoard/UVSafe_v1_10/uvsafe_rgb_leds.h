@@ -25,12 +25,8 @@ unsigned long fadeDelay = 15; //en mS
 unsigned long last_millis = millis();
 int max_intensity = 164;
 int min_intensity = 10;
-int intensity = min_intensity; //intensity no puede ser menor que min intensity
-                               //en caso de que se necesite una intensidad menor
-                               //se puede usar pero al salir de la condicion donde se necesita
-                               //esta intensidad menor entonces la intensidad se debe igualar
-                               //a min_intensity
-bool toggle_inc = false; //controla el fade in fade out
+int intensity = min_intensity;
+bool toggle_inc = false;
 
 
 class RGBLeds {
@@ -80,8 +76,13 @@ void Update(uvs_mode _current_mode, SENSOR_STRUCT sensors){
                         intensity = min_intensity; //intensity cant be < min_intensity
                         previous_mode = current_mode;
                         toggle_inc = false;
+
                 }
                 auto_pattern();
+                //aqui tiene que tener dos modos. primero el de la cuenta regresiva
+                //en donde los leds se iluminaran poco a poco y despues
+                // el fade in fade out mientras el timer no ha acabado.
+                // ver enum timer mode (HAL.h)
                 break;
 
         case mode_manual_push:
@@ -129,11 +130,8 @@ void auto_pattern(){
 
                 for (int i=seg0; i<seg6; i++) {
                         if(sensor_state.pir_status != 0) {
-                                if(sensor_state.pir_transition != 0)
-                                  //Si los PIR detectan a alguien, entonces amarillo y la deteccion esta activa
-                                  leds[i] = CRGB::OrangeRed;
-                                else //La deteccion no esta activa y pronto se van a reiniciar la UV
-                                  leds[i] = CRGB::DeepSkyBlue;
+                                //Si los PIR detectan a alguien, entonces amarillo
+                                leds[i] = CRGB::OrangeRed;
                         }
                         else{
                                 //Si los PIR estan  ok entonces es morado

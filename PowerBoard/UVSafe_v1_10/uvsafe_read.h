@@ -4,33 +4,6 @@
  *  Aguascalientes, Mexico. Mayo 2020
  */
 
-class After_Pir {
-unsigned long last_update;
-unsigned long time_delay;
-bool pir_state = true;
-
-public:
-After_Pir(unsigned long _time_delay){
-        time_delay = _time_delay;
-}
-
-bool run (int sensor_){
-        if (sensor_ != 0) {
-                pir_state = false;
-                last_update = millis();
-        }
-        else{
-                // si ya esperamos mas de lo que queremos esperar para reactivar las lamparas
-                if((millis() - last_update) > time_delay) {
-                        pir_state = true;
-                }
-        }
-        return !pir_state; //logica inversa por que el contacto es NC
-}
-};
-
-
-
 class Debounce {
 int ledState = HIGH;             // the current state of the output pin
 int buttonState = -1;                 // the current reading from the input pin
@@ -91,15 +64,13 @@ Debounce pir_deb_4 = Debounce(PirDebouncingTime);
 
 Debounce deadman_deb = Debounce(DeadmanDebouncingTime);
 
-After_Pir after_pir = After_Pir(30000);
-
 public:
 ReadSensors(SENSOR_STRUCT _sensor_state, Adafruit_MCP23017 _gpio) {
         gpio = _gpio;
         sensor_state = _sensor_state;
 }
 
-SENSOR_STRUCT read_sensors(uvs_mode current_mode) {
+SENSOR_STRUCT read_sensors() {
         /*
            This function reads all the declared sensors
            :return: struct conteniendo el estado de los sensores
@@ -110,11 +81,7 @@ SENSOR_STRUCT read_sensors(uvs_mode current_mode) {
         sensor_state.pir_2 = pir_deb_2.Update(digitalRead(PIR2_Pin));
         sensor_state.pir_3 = pir_deb_3.Update(digitalRead(PIR3_Pin));
         sensor_state.pir_4 = pir_deb_4.Update(digitalRead(PIR4_Pin));
-        sensor_state.pir_transition = sensor_state.pir_1 + sensor_state.pir_2 + sensor_state.pir_3 + sensor_state.pir_4;
-        if (current_mode == mode_auto_on)
-          sensor_state.pir_status = after_pir.run(  sensor_state.pir_transition);
-        else
-          sensor_state.pir_status =   sensor_state.pir_transition;
+        sensor_state.pir_status = sensor_state.pir_1 + sensor_state.pir_2 + sensor_state.pir_3 + sensor_state.pir_4;
         sensor_state.magnetic_1 = mag_deb_1.Update(gpio.digitalRead(MAGNETIC1));
         sensor_state.magnetic_2 = mag_deb_2.Update(gpio.digitalRead(MAGNETIC2));
         sensor_state.magnetic_3 = mag_deb_3.Update(gpio.digitalRead(MAGNETIC3));

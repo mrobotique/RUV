@@ -18,7 +18,6 @@ void lamparas_auto(Adafruit_MCP23017 gpio){
                         expo_timer.start();
                 }
                 expo_timer.run();
-
                 if (sensor_state.pir_status != 0) {
                         expo_timer.pause();
                         lamp_state.lamp_1 = 0;
@@ -31,7 +30,6 @@ void lamparas_auto(Adafruit_MCP23017 gpio){
                         lamp_state.lamp_8 = 0; // relay auxiliar para futuras aplicaciones
                 }
                 else{
-
                         expo_timer.start();
                         lamp_state.lamp_1 = 1 * sensor_state.magnetic_1;
                         lamp_state.lamp_2 = 1 * sensor_state.magnetic_2;

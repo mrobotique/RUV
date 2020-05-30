@@ -38,7 +38,7 @@ void setup() {
 
 void loop() {
         // put your main code here, to run repeatedly:
-        sensor_state = sensors.read_sensors(operation_mode);
+        sensor_state = sensors.read_sensors();
         SerialDataSender.Update(sensor_state);
         //chenille_test(gpio);
         LedsIndicadores.Update(operation_mode, sensor_state);
@@ -46,6 +46,5 @@ void loop() {
         safety_functions();
         lamparas_manual(gpio);
         lamparas_auto(gpio);
-        //Serial.println(after_pir.run());
         delay(10); //Para no atascar el pueto serie
 }
