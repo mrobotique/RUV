@@ -3,6 +3,7 @@
  *  Todos los derechos reservados
  *  Aguascalientes, Mexico. Mayo 2020
  */
+#include <avr/wdt.h>
 #include <uvsafe_user_definitions.h>
 #include <Arduino.h>
 #include <Wire.h>
@@ -28,6 +29,8 @@ ReadSensors sensors(sensor_state, gpio);
 
 
 void setup() {
+        wdt_disable(); //deshabilitar watchdog para no tener interrupciones
+        wdt_enable(WDTO_4S);// nunca usar menos de 250 ms si no se va a resetar sin control
         init_gpio(gpio);
         Serial.begin(115200); //Regular serial port -- Terminal/debug/program
         GUISerial.begin(115200); //Serial port for GUI
@@ -37,6 +40,7 @@ void setup() {
 
 
 void loop() {
+        wdt_reset(); //ping al watchdog
         // put your main code here, to run repeatedly:
         sensor_state = sensors.read_sensors(operation_mode);
         SerialDataSender.Update(sensor_state);
