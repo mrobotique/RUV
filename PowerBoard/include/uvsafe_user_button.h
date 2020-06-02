@@ -29,7 +29,8 @@ void user_button_update(RGBLeds LedsIndicadores) {
                         LedsIndicadores.confirm_push(false);
                         operation_mode = mode_auto_init;
                 }
-                if ((auto_button.clicks > 0) && !pir_timeout && (previous_mode != mode_auto_on)){
+                if (digitalRead(DEADMAN_Pin) == 0) timer_count = 0; //si el usuario se arrepiente... le pica al deadman y regresamos a manual normal
+                if ((auto_button.clicks > 0) && !pir_timeout && (previous_mode != mode_auto_on) && (previous_mode != mode_auto_init)){
                         last_click_update = millis();
                         timer_count += 1;
                         if (timer_count > NUM_LEDS) timer_count = 1;
