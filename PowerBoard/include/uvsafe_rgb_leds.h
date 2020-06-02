@@ -219,7 +219,7 @@ void manual_pattern(SENSOR_STRUCT sensors){
                                 leds[i] = CRGB::Black;
                         }
 
-                        FastLED.show(int(max_intensity/3.0)); //demasiado intenso
+                        FastLED.show(int(max_intensity)); //demasiado intenso
                 }
         }
         else{ //si llegamos aqui por que el PIR llego a un timeout, entonces avisa (narajna)
