@@ -4,12 +4,12 @@
  *  Aguascalientes, Mexico. Mayo 2020
  */
 #include <avr/wdt.h>
+#include "uvsafe_user_definitions.h"
 #include <Arduino.h>
-#include <SoftwareSerial.h>
 #include <Wire.h>
 #include "Adafruit_MCP23017.h"
 #include "HAL.h"
-#include "uvsafe_user_definitions.h"
+#include <SoftwareSerial.h>
 #include "uvsafe_read.h"
 #include "uvsafe_write.h"
 #include "uvsafe_comm.h"
