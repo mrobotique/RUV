@@ -44,9 +44,13 @@ public:
 void Update(uvs_mode _current_mode, SENSOR_STRUCT sensors){
         current_mode = _current_mode;
         switch (current_mode) {
+        case mode_boot:
+                boot_pattern();
+                break;
         case mode_manual:
                 if(previous_mode != current_mode) {
                         intensity = 0;
+                        LedCount = 0;
                         FastLED.show(intensity);
                         previous_mode = current_mode;
                 }
@@ -54,7 +58,6 @@ void Update(uvs_mode _current_mode, SENSOR_STRUCT sensors){
 
                 break;
         case mode_auto_init:
-                //TODO
                 if(previous_mode != current_mode) {
                         LedCount = 0;
                         leds[LedCount] = CRGB::DeepSkyBlue;
@@ -95,6 +98,24 @@ void Update(uvs_mode _current_mode, SENSOR_STRUCT sensors){
         } //case
 }
 
+
+void boot_pattern(){
+        for (int i=0; i<NUM_LEDS; i++) {
+                for (int j=0; j<NUM_LEDS; j++) leds[j] = CRGB::Black;
+                leds[i] = CRGB::Purple;
+                FastLED.show(int(max_intensity/3.0)); //estaba muy intenso
+                delay(50);
+        }
+
+        for (int i=NUM_LEDS; i>=0; i--) {
+                for (int j=0; j<NUM_LEDS; j++) leds[j] = CRGB::Black;
+                leds[i] = CRGB::Purple;
+                FastLED.show(int(max_intensity/3.0)); //estaba muy intenso
+                delay(50);
+        }
+        operation_mode = mode_manual;
+}
+
 void init_pattern(){
 
         if ((millis() - last_millis) > init_time_segment) {
@@ -122,10 +143,10 @@ void auto_pattern(){
                 for (int i=seg0; i<seg6; i++) {
                         if(sensor_state.pir_status != 0) {
                                 if(sensor_state.pir_transition != 0)
-                                  //Si los PIR detectan a alguien, entonces amarillo y la deteccion esta activa
-                                  leds[i] = CRGB::OrangeRed;
+                                        //Si los PIR detectan a alguien, entonces amarillo y la deteccion esta activa
+                                        leds[i] = CRGB::OrangeRed;
                                 else //La deteccion no esta activa y pronto se van a reiniciar la UV
-                                  leds[i] = CRGB::DeepSkyBlue;
+                                        leds[i] = CRGB::DeepSkyBlue;
                         }
                         else{
                                 //Si los PIR estan  ok entonces es morado
@@ -153,7 +174,7 @@ void manual_push_pattern(){
                 last_millis = millis();
 
                 for (int i=seg0; i<seg6; i++) {
-                        leds[i] = CRGB::Red;
+                        leds[i] = CRGB::Purple;
                 }
 
                 FastLED.show(intensity);
@@ -169,72 +190,43 @@ void manual_push_pattern(){
                         intensity--;
                 }
         }
+
+
 }
 
 void manual_pattern(SENSOR_STRUCT sensors){
-        if(sensors.magnetic_1 == 1) {
-                for(int i=seg0; i<seg1; i++) {
-                        leds[i] = CRGB::Green;
-                }
-        }
-        else{
-                for(int i=seg0; i<seg1; i++) {
-                        leds[i] = CRGB::Red;
-                }
-        }
+        if (!pir_timeout) {  //Si el timeout de los pir no esta activo haz normal
+                if(timer_count == 0) {
+                        if(sensors.magnetic_1 == 0) {
+                                for(int i=seg0; i<seg6; i++) {
+                                        leds[i] = CRGB::Green;
+                                }
+                        }
+                        else{
+                                for(int i=seg0; i<seg6; i++) {
+                                        leds[i] = CRGB::Red;
+                                }
+                        }
 
-        if(sensors.magnetic_2 == 1) {
-                for(int i=seg1; i<seg2; i++) {
-                        leds[i] = CRGB::Green;
                 }
-        }
-        else{
-                for(int i=seg1; i<seg2; i++) {
-                        leds[i] = CRGB::Red;
-                }
-        }
+                else{
 
-        if(sensors.magnetic_3 == 1) {
-                for(int i=seg2; i<seg3; i++) {
-                        leds[i] = CRGB::Green;
-                }
-        }
-        else{
-                for(int i=seg2; i<seg3; i++) {
-                        leds[i] = CRGB::Red;
-                }
-        }
+                        for (unsigned long i=0; i<timer_count; i++) {
+                                leds[i] = CRGB::DarkMagenta;
+                        }
 
-        if(sensors.magnetic_4 == 1) {
-                for(int i=seg3; i<seg4; i++) {
-                        leds[i] = CRGB::Green;
-                }
-        }
-        else{
-                for(int i=seg3; i<seg4; i++) {
-                        leds[i] = CRGB::Red;
-                }
-        }
+                        for (int i=timer_count; i<NUM_LEDS; i++) {
+                                leds[i] = CRGB::Black;
+                        }
 
-        if(sensors.magnetic_5 == 1) {
-                for(int i=seg4; i<seg5; i++) {
-                        leds[i] = CRGB::Green;
+                        FastLED.show(int(max_intensity/3.0)); //demasiado intenso
                 }
         }
-        else{
-                for(int i=seg4; i<seg5; i++) {
-                        leds[i] = CRGB::Red;
-                }
-        }
-
-        if(sensors.magnetic_6 == 1) {
-                for(int i=seg5; i<seg6; i++) {
-                        leds[i] = CRGB::Green;
-                }
-        }
-        else{
-                for(int i=seg5; i<seg6; i++) {
-                        leds[i] = CRGB::Red;
+        else{ //si llegamos aqui por que el PIR llego a un timeout, entonces avisa (narajna)
+              // y espera a que se resetie el color apretando cualquier boton
+                if ((digitalRead(DEADMAN_Pin) == 0) || (auto_button.clicks != 0)) pir_timeout = false;
+                for(int i=seg0; i<seg6; i++) {
+                        leds[i] = CRGB::OrangeRed;
                 }
         }
         FastLED.show(64);
@@ -243,7 +235,7 @@ void manual_pattern(SENSOR_STRUCT sensors){
 void confirm_push(bool on){
         if(on) {
                 for (int i=seg0; i<seg6; i++) {
-                        leds[i] = CRGB::DeepPink;
+                        leds[i] = CRGB::DeepSkyBlue;
                 }
                 FastLED.show(int(max_intensity/3.0)); //demasiado intenso
         }
@@ -254,6 +246,5 @@ void confirm_push(bool on){
                 }
                 FastLED.show(min_intensity);
         }
-
 }
 };

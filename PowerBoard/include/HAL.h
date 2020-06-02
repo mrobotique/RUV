@@ -15,12 +15,12 @@ https://github.com/cosmikwolf/Bounce2mcp.git
 
 //operation modes
 enum uvs_mode{
+  mode_boot,
   mode_auto_on,
   mode_auto_init,
   mode_manual,
   mode_manual_push,
-  mode_test,
-  mode_pir
+  mode_test
 } operation_mode;
 
 //Timer modes
@@ -28,6 +28,14 @@ enum timer_mode{
   init_sequence,
   running
 };
+
+/** Relacionado con el boton y el timer ***/
+unsigned long timer_count = 0; //Cuenta cuantas veces se ha clickeado el boton de usuario
+unsigned long nuevo_tiempo_exposicion = 0;
+unsigned long last_click_update; //timer para decidir cuando pasar a modo basal
+
+/*** PIR ***/
+unsigned long last_pir_time = millis();
 
 //LED TypicalLEDStrip
 #define LED_PIN     7
@@ -155,3 +163,6 @@ pinMode(DEADMAN_Pin, INPUT_PULLUP);
 //LED Strip  WS2812B
 FastLED.addLeds<WS2812B,LED_PIN,EOrder::GRB>(leds, NUM_LEDS);
 }
+
+//Pir boolean para saber si la lampara se apago por que el pir se activo mucho Tiempo
+bool pir_timeout = false;

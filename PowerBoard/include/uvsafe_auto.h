@@ -7,14 +7,18 @@
 
 //Prototipo
 void uvsafe_timer_Complete(void);
+
 //Instancia de timer. Exposition time esta definido en uvsafe_user_definitions
 Countdown expo_timer(EXPOSITION_TIME, uvsafe_timer_Complete);  //300 seg (5min) para probar
+
 
 
 void lamparas_auto(Adafruit_MCP23017 gpio){
         if (operation_mode == mode_auto_on) {
                 if (expo_timer.is_running() != true) {
                         expo_timer.reset();
+                        expo_timer.new_time(nuevo_tiempo_exposicion); //nuevo_tiempo_exposicion esta definido en uvsafe_user_button.h
+
                         expo_timer.start();
                 }
                 expo_timer.run();

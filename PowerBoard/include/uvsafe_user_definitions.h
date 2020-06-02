@@ -36,4 +36,10 @@ algun valor de tiempo debe referirse a este archivo
 #define MAGNETIC_DEBOUNCE 800 //ms
 #define PIR_DEBOUNCE 100 //ms
 #define DEADMAN_DEBOUNCE 1000 //ms
+
+/*********** PIR ********************/
 #define AFTER_PIR 30000 //[ms] Tiempo para encender las lamparas despues que ningun sensor PIR detecta presencia.
+const unsigned long MAX_PIR_TIME_BEFORE_MANUAL = 180000; //Si alguien esta en la zona de los pir por mas de 3 min, pasamos a manual
+
+/****************** BOTON DE USUARIO *************************/
+const unsigned long TIMEOUT_CLICK = 25000; //para definir cuando se pasa a modo manual despues de haber apretado el boton de Usuario

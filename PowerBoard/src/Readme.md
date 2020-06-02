@@ -24,3 +24,20 @@ Physial Pin # 	Pin Name 	Pin ID
 *FastLED Library
 https://github.com/FastLED/FastLED
 **FastLED color reference: http://fastled.io/docs/3.1/struct_c_r_g_b.html
+
+CAMBIOS VERSION 2
+* Se agrego secuencia de leds de boot (inicio)
+* Los sensores magneticos 2 al 6 ya no son tomados en cuenta
+* El sensor magnetico 1 es tomado en cuenta en el modo manual para detectar el escudo y habilitar el deadman switch
+* El sensor magnetico 1 es tomado en cuenta en el modo automatico para evitar prender la lampara 1 cuando esta colocado el escudo
+* El boton principal tiene dos funciones: click cortos--> aumenta el tiempo de exposicion de la lampara (5minutos por click). El click largo lanza la el proceso de exposicion
+* Se agrego timeout al timer setup : si el usuario programa un tiempo pero no activa la lampara, luego de 25 segundos el sistema regresara a su estado basal (manual)
+* Se agrego timeout al pir. Si los pir estan activos por mas de 3 mintuos el sistema vuelve a un estado quasi-manual en el que los leds estan en naranja solido (para indicar al usuario que la maquina no esta en modo automatico y que el ciclo de exposicion no se efectuo
+  por que la deteccion PIR estuvo activa por mas de 3 minutos). Para salir de este modo hay que usar un boton (principal o deadman)
+* Se modifico el codigo de color
+    - rojo: modo manual sin escudo
+    - verde: modo manual listo para ser operado
+    - azul in-out: iniciando cuenta regresiva para comenzar el tiempo de desinfeccion
+    - violeta solido: En modo timer setup cada led representa 5 min
+    - violeta in-out: proceso en curso (manual o automatico)
+    - naranja in-out: proceso en curso pero sistema en pausa (PIR activos)

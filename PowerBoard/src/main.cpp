@@ -34,7 +34,7 @@ void setup() {
         init_gpio(gpio);
         Serial.begin(115200); //Regular serial port -- Terminal/debug/program
         GUISerial.begin(115200); //Serial port for GUI
-        operation_mode = mode_manual;
+        operation_mode = mode_boot;
         delay(300); //for system stabilization
 }
 
@@ -44,12 +44,10 @@ void loop() {
         // put your main code here, to run repeatedly:
         sensor_state = sensors.read_sensors(operation_mode);
         SerialDataSender.Update(sensor_state);
-        //chenille_test(gpio);
         LedsIndicadores.Update(operation_mode, sensor_state);
         user_button_update(LedsIndicadores);
         safety_functions();
         lamparas_manual(gpio);
         lamparas_auto(gpio);
-        //Serial.println(after_pir.run());
         delay(10); //Para no atascar el pueto serie
 }
