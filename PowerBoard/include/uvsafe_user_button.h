@@ -19,6 +19,7 @@ void user_button_update(RGBLeds LedsIndicadores) {
                 if (auto_button.clicks == -1 && auto_button.depressed == true)
                 {
                         LedsIndicadores.confirm_push(true);
+                        if (timer_count == 0) timer_count = 1; //El tiempo minimo a enviar son cinco minutos
                         nuevo_tiempo_exposicion = timer_count * CINCO_MINUTOS;
                         timer_count = 0;
                         while (auto_button.depressed) { //No hacer nada mientras el usuario no suelta el boton
@@ -28,7 +29,7 @@ void user_button_update(RGBLeds LedsIndicadores) {
                         LedsIndicadores.confirm_push(false);
                         operation_mode = mode_auto_init;
                 }
-                if ((auto_button.clicks > 0) && !pir_timeout){
+                if ((auto_button.clicks > 0) && !pir_timeout && (previous_mode != mode_auto_on)){
                         last_click_update = millis();
                         timer_count += 1;
                         if (timer_count > NUM_LEDS) timer_count = 1;

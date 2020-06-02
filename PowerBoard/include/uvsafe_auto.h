@@ -18,7 +18,7 @@ void lamparas_auto(Adafruit_MCP23017 gpio){
                 if (expo_timer.is_running() != true) {
                         expo_timer.reset();
                         expo_timer.new_time(nuevo_tiempo_exposicion); //nuevo_tiempo_exposicion esta definido en uvsafe_user_button.h
-
+                        timer_count = 0;
                         expo_timer.start();
                 }
                 expo_timer.run();
