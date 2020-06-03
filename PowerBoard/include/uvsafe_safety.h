@@ -5,7 +5,7 @@
  */
 
 void check_pir(){
-        if (operation_mode != mode_manual) {
+        if ((operation_mode != mode_manual) && (operation_mode != mode_boot)){
                 if ((millis() - last_pir_time) > MAX_PIR_TIME_BEFORE_MANUAL) {
                         pir_timeout = true;
                         operation_mode = mode_manual;

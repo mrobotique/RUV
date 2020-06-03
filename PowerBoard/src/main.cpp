@@ -19,8 +19,6 @@
 #include "uvsafe_manual.h"
 #include "uvsafe_auto.h"
 
-
-
 Adafruit_MCP23017 gpio;
 SoftwareSerial GUISerial(2, 3); // RX, TX
 DataSender SerialDataSender(sensor_state);
@@ -35,7 +33,7 @@ void setup() {
         Serial.begin(115200); //Regular serial port -- Terminal/debug/program
         GUISerial.begin(115200); //Serial port for GUI
         operation_mode = mode_boot;
-        delay(300); //for system stabilization
+        delay(1500); //for system stabilization
 }
 
 

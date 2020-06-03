@@ -165,4 +165,4 @@ FastLED.addLeds<WS2812B,LED_PIN,EOrder::GRB>(leds, NUM_LEDS);
 }
 
 //Pir boolean para saber si la lampara se apago por que el pir se activo mucho Tiempo
-bool pir_timeout = false;
+bool pir_timeout = false; //el valor se actualiza -> true en uvsafe_safety.h
