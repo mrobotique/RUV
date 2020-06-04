@@ -12,8 +12,6 @@
 
 int previous_mode;
 int LedCount = 0;
-//Delay para el fade in fade out
-unsigned long fadeDelay = 15; //en mS
 unsigned long last_millis = millis();
 // max_intensity y min_intensity estan definidos en uvsafe_user_definitions
 
@@ -161,10 +159,10 @@ void auto_pattern(){
                 }
 
                 if (toggle_inc) {
-                        intensity++;
+                        intensity+=INTENSITY_INC; //INTENSITY_INC definido en uvsafe_user_definitions
                 }
                 else {
-                        intensity--;
+                        intensity-=INTENSITY_INC;
                 }
         }
 }
@@ -184,10 +182,10 @@ void manual_push_pattern(){
                 }
 
                 if (toggle_inc) {
-                        intensity++;
+                        intensity+=INTENSITY_INC;
                 }
                 else {
-                        intensity--;
+                        intensity-=INTENSITY_INC;
                 }
         }
 

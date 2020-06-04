@@ -8,7 +8,7 @@
 #include <ArduinoJson.h>
 
 class DataSender {
-unsigned long data_period = 50;    // tiempo en milisegs
+unsigned long data_period = 250;    // tiempo en milisegs
 SENSOR_STRUCT sensor_state;
 unsigned long previousMillis;     // will store last time LED was updated
 

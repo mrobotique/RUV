@@ -27,19 +27,18 @@ ReadSensors sensors(sensor_state, gpio);
 
 
 void setup() {
+        delay(1500); //for system stabilization
         wdt_disable(); //deshabilitar watchdog para no tener interrupciones
         wdt_enable(WDTO_4S);// nunca usar menos de 250 ms si no se va a resetar sin control
         init_gpio(gpio);
         Serial.begin(115200); //Regular serial port -- Terminal/debug/program
         GUISerial.begin(115200); //Serial port for GUI
         operation_mode = mode_boot;
-        delay(1500); //for system stabilization
 }
 
 
 void loop() {
         wdt_reset(); //ping al watchdog
-        // put your main code here, to run repeatedly:
         sensor_state = sensors.read_sensors(operation_mode);
         SerialDataSender.Update(sensor_state);
         LedsIndicadores.Update(operation_mode, sensor_state);
@@ -47,5 +46,4 @@ void loop() {
         safety_functions();
         lamparas_manual(gpio);
         lamparas_auto(gpio);
-        delay(10); //Para no atascar el pueto serie
 }

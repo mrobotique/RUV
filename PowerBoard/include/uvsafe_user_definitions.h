@@ -29,7 +29,11 @@ algun valor de tiempo debe referirse a este archivo
 
 //Intensidades de los leds
 #define max_intensity 164
-#define min_intensity 10
+#define min_intensity 5
+//Delay para el fade in fade out
+unsigned long fadeDelay = 1; //en mS
+#define INTENSITY_INC 1 //Incremento de la intensidad. En el codigo esta definido como
+                        // intensity += INTENSITY_INC  o intensity -= INTENSITY_INC
 
 /****************  DEBOUNCING TIMES *******************/
 //Estas definiciones son usadas en uvsafe_read
