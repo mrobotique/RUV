@@ -12,15 +12,18 @@ https://github.com/cosmikwolf/Bounce2mcp.git
 #include <Arduino.h>
 #include "FastLED.h"
 #include "ClickButton.h"
+#include "Countimer.h"
 
+//timer
+Countimer uvsafe_timer;
+unsigned long tiempo_exposicion = 10; // un minuto para test
 //operation modes
 enum uvs_mode{
   mode_auto_on,
   mode_auto_init,
   mode_manual,
   mode_manual_push,
-  mode_test,
-  mode_pir
+  mode_test
 } operation_mode;
 
 //Timer modes
@@ -31,7 +34,7 @@ enum timer_mode{
 
 //LED TypicalLEDStrip
 #define LED_PIN     7
-#define NUM_LEDS    18
+#define NUM_LEDS    6
 #define BRIGHTNESS  32
 CRGB leds[NUM_LEDS]; //Instance
 
@@ -73,8 +76,6 @@ struct SENSOR_STRUCT{
   int pir_2;
   int pir_3;
   int pir_4;
-  int pir_status;
-  int pir_transition;
   int magnetic_1;
   int magnetic_2;
   int magnetic_3;
