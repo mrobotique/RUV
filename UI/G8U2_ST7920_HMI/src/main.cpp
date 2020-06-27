@@ -46,8 +46,11 @@
 #include <U8g2lib.h>
 #include <Wire.h>
 
+//NANO
+//U8G2_ST7920_128X64_1_SW_SPI u8g2(U8G2_R2, /* clock=*/ 13, /* data=*/ 11, /* CS=*/ 10, /* reset=*/ 8);
+//Wemos D1
 
-U8G2_ST7920_128X64_1_SW_SPI u8g2(U8G2_R2, /* clock=*/ 13, /* data=*/ 11, /* CS=*/ 10, /* reset=*/ 8);
+U8G2_ST7920_128X64_F_SW_SPI u8g2(U8G2_R2, /* clock=*/ 14, /* data=*/ 13, /* CS=*/ 15, /* reset=*/ 2);
 
 // End of constructor list
 
