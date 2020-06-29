@@ -59,7 +59,9 @@ void draw_hexagon(int x_offset){
   u8g2.drawCircle(x_offset+52,30,4);
   }
 
-uint8_t m = 24;void loop() {
+uint8_t m = 24;
+
+void loop() {
   char m_str[3];
 strcpy(m_str, u8x8_u8toa(m, 2));		/* convert m to a string with two digits */
 u8g2.firstPage();
@@ -68,8 +70,5 @@ do {
    //u8g2_box_title(0);
    draw_hexagon(70);
 } while ( u8g2.nextPage() );
-delay(1000);
-m++;
-if ( m == 60 )
-  m = 0;
+
 }
