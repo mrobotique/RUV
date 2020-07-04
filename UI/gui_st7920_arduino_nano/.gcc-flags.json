@@ -1,0 +1,8 @@
+{
+  "execPath": "/home/miguel/.platformio/packages/toolchain-atmelavr/bin/avr-g++",
+  "gccDefaultCFlags": "-fsyntax-only -std=gnu11 -fno-fat-lto-objects -Os -Wall -ffunction-sections -fdata-sections -flto -mmcu=atmega328p -DPLATFORMIO=40304 -DARDUINO_AVR_NANO -DF_CPU=16000000L -DARDUINO_ARCH_AVR -DARDUINO=10808 -D__AVR_ATmega328P__",
+  "gccDefaultCppFlags": "-fsyntax-only -fno-exceptions -fno-threadsafe-statics -fpermissive -std=gnu++11 -Os -Wall -ffunction-sections -fdata-sections -flto -mmcu=atmega328p -DPLATFORMIO=40304 -DARDUINO_AVR_NANO -DF_CPU=16000000L -DARDUINO_ARCH_AVR -DARDUINO=10808 -D__AVR_ATmega328P__",
+  "gccErrorLimit": 15,
+  "gccIncludePaths": "/home/miguel/.platformio/lib/U8g2_ID942/src,/home/miguel/.platformio/packages/framework-arduino-avr/libraries/SPI/src,/home/miguel/.platformio/packages/framework-arduino-avr/libraries/Wire/src,/home/miguel/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src,/home/miguel/.platformio/packages/framework-arduino-avr/libraries/HID/src,/home/miguel/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src,/home/miguel/RD/UVSafe/RUV/UI/gui_st7920_arduino_nano/include,/home/miguel/RD/UVSafe/RUV/UI/gui_st7920_arduino_nano/src,/home/miguel/.platformio/packages/framework-arduino-avr/cores/arduino,/home/miguel/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs,/home/miguel/.platformio/packages/toolchain-atmelavr/lib/gcc/avr/5.4.0/include,/home/miguel/.platformio/packages/toolchain-atmelavr/lib/gcc/avr/5.4.0/include-fixed,/home/miguel/.platformio/packages/toolchain-atmelavr/avr/include,/home/miguel/.platformio/packages/tool-unity",
+  "gccSuppressWarnings": false
+}
