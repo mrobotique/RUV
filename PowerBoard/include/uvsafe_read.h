@@ -141,7 +141,7 @@ SENSOR_STRUCT read_sensors(uvs_mode current_mode) {
         sensor_state.pir_4 = pir_deb_4.Update(digitalRead(PIR4_Pin));
         sensor_state.pir_transition = sensor_state.pir_1 + sensor_state.pir_2 + sensor_state.pir_3 + sensor_state.pir_4;
         if (current_mode == mode_auto_on)
-          sensor_state.pir_status = after_pir.run(  sensor_state.pir_transition);
+          sensor_state.pir_status = after_pir.run(sensor_state.pir_transition);
         else
           sensor_state.pir_status =   sensor_state.pir_transition;
         sensor_state.magnetic_1 = mag_deb_1.Update(gpio.digitalRead(MAGNETIC1));
