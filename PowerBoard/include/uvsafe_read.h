@@ -80,10 +80,6 @@ int DeadmanDebouncingTime = DEADMAN_DEBOUNCE; //ms
 
 Debounce mag_deb_1 = Debounce(MagneticDebouncingTime);
 Debounce mag_deb_2 = Debounce(MagneticDebouncingTime);
-Debounce mag_deb_3 = Debounce(MagneticDebouncingTime);
-Debounce mag_deb_4 = Debounce(MagneticDebouncingTime);
-Debounce mag_deb_5 = Debounce(MagneticDebouncingTime);
-Debounce mag_deb_6 = Debounce(MagneticDebouncingTime);
 
 Debounce pir_deb_1 = Debounce(PirDebouncingTime);
 Debounce pir_deb_2 = Debounce(PirDebouncingTime);
@@ -100,13 +96,45 @@ ReadSensors(SENSOR_STRUCT _sensor_state, Adafruit_MCP23017 _gpio) {
         sensor_state = _sensor_state;
 }
 
+int last_beep_deadman = 1;
+int last_beep_deadman1 = 1;
+int last_beep_deadman2 = 1;
 SENSOR_STRUCT read_sensors(uvs_mode current_mode) {
         /*
            This function reads all the declared sensors
            :return: struct conteniendo el estado de los sensores
            :rtype: SENSOR_STRUCT
          */
-        sensor_state.deadman_sw = deadman_deb.Update(digitalRead(DEADMAN_Pin));
+        sensor_state.deadman1_sw = deadman_deb.Update(digitalRead(DEADMAN1_Pin));
+        sensor_state.deadman2_sw = deadman_deb.Update(digitalRead(DEADMAN2_Pin));
+
+        if (!(sensor_state.deadman1_sw && sensor_state.deadman2_sw)) {
+          if (last_beep_deadman != 0){
+            last_beep_deadman = (sensor_state.deadman1_sw && sensor_state.deadman2_sw);
+            beeper.Trigger(TWO_BEEP);
+          }
+        }
+        else
+          last_beep_deadman = (sensor_state.deadman1_sw && sensor_state.deadman2_sw);
+
+          if (!digitalRead(DEADMAN1_Pin)) {
+            if (last_beep_deadman1 != 0){
+              last_beep_deadman1 = digitalRead(DEADMAN1_Pin);
+              beeper.Trigger(ONE_BEEP);
+            }
+          }
+          else
+            last_beep_deadman1 = digitalRead(DEADMAN1_Pin);
+
+            if (!digitalRead(DEADMAN2_Pin)) {
+              if (last_beep_deadman2 != 0){
+                last_beep_deadman2 = digitalRead(DEADMAN2_Pin);
+                beeper.Trigger(ONE_BEEP);
+              }
+            }
+            else
+              last_beep_deadman2 = digitalRead(DEADMAN2_Pin);
+
         sensor_state.pir_1 = pir_deb_1.Update(digitalRead(PIR1_Pin));
         sensor_state.pir_2 = pir_deb_2.Update(digitalRead(PIR2_Pin));
         sensor_state.pir_3 = pir_deb_3.Update(digitalRead(PIR3_Pin));
@@ -118,18 +146,12 @@ SENSOR_STRUCT read_sensors(uvs_mode current_mode) {
           sensor_state.pir_status =   sensor_state.pir_transition;
         sensor_state.magnetic_1 = mag_deb_1.Update(gpio.digitalRead(MAGNETIC1));
         sensor_state.magnetic_2 = mag_deb_2.Update(gpio.digitalRead(MAGNETIC2));
-        sensor_state.magnetic_3 = mag_deb_3.Update(gpio.digitalRead(MAGNETIC3));
-        sensor_state.magnetic_4 = mag_deb_4.Update(gpio.digitalRead(MAGNETIC4));
-        sensor_state.magnetic_5 = mag_deb_5.Update(gpio.digitalRead(MAGNETIC5));
-        sensor_state.magnetic_6 = mag_deb_6.Update(gpio.digitalRead(MAGNETIC6));
         sensor_state.lamp_1 = gpio.digitalRead(LAMP1);
         sensor_state.lamp_2 = gpio.digitalRead(LAMP2);
         sensor_state.lamp_3 = gpio.digitalRead(LAMP3);
         sensor_state.lamp_4 = gpio.digitalRead(LAMP4);
         sensor_state.lamp_5 = gpio.digitalRead(LAMP5);
         sensor_state.lamp_6 = gpio.digitalRead(LAMP6);
-        sensor_state.lamp_7 = gpio.digitalRead(LAMP7);
-        sensor_state.lamp_8 = gpio.digitalRead(LAMP8);
         return sensor_state;
 }
 
@@ -137,7 +159,8 @@ void print_sensor_state() {
         Serial.print("auto: ");
         Serial.print(digitalRead(AUTO_Pin));
         Serial.print(" | deadman_sw: ");
-        Serial.print(sensor_state.deadman_sw);
+        Serial.print(sensor_state.deadman1_sw);
+        Serial.print(sensor_state.deadman2_sw);
         Serial.print(" | PIR :");
         Serial.print(sensor_state.pir_1);
         Serial.print(sensor_state.pir_2);
@@ -146,10 +169,6 @@ void print_sensor_state() {
         Serial.print(" | mag: ");
         Serial.print(sensor_state.magnetic_1);
         Serial.print(sensor_state.magnetic_2);
-        Serial.print(sensor_state.magnetic_3);
-        Serial.print(sensor_state.magnetic_4);
-        Serial.print(sensor_state.magnetic_5);
-        Serial.print(sensor_state.magnetic_6);
         Serial.print(" | lamps: ");
         Serial.print(sensor_state.lamp_1);
         Serial.print(sensor_state.lamp_2);
@@ -157,7 +176,5 @@ void print_sensor_state() {
         Serial.print(sensor_state.lamp_4);
         Serial.print(sensor_state.lamp_5);
         Serial.print(sensor_state.lamp_6);
-        Serial.print(sensor_state.lamp_7);
-        Serial.println(sensor_state.lamp_8);
 }
 };

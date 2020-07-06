@@ -25,6 +25,32 @@ Physial Pin # 	Pin Name 	Pin ID
 https://github.com/FastLED/FastLED
 **FastLED color reference: http://fastled.io/docs/3.1/struct_c_r_g_b.html
 
+CAMBIOS VERSION 3
+* RELEVADORES: Se redujo el numero de relevadores de 8 a 6. Los relevadores estan localizados en la GPIO de la siguiente manera en el MCP23017 (address 000)
+  + Lampara1 : GPA5
+  + Lampara2 : GPA4
+  + Lampara3 : GPA3
+  + Lampara4 : GPA2
+  + Lampara5 : GPA1
+  + Lampara6 : GPA0
+
+* Los botones DEADMAN y BOTON PRINCIPAL ahora son 2. Los LED de los botones estan conectados en el MCP23017 de la siguiente manera:
+  + LED deadman 1 y 2 (en paralelo): GPA6
+  + LED boton principal: GPA7
+
+* Los botones estan localizados (Entradas) en:
+  + Deadman1: digital input 8
+  + Deadman2: digital input 6
+
+* Se redujo el numero de sensores magneticos de 6 a 2. Ahora estan localizados e el MCP23017 de la siguiente manera:
+  + Mag1: GPB0
+  + Mag2: GPB1  
+
+* Se agrego un buzzer. Esta en el MCP23017 en GPB2
+* Se agrego un LED de status en digital output 5
+
+
+
 CAMBIOS VERSION 2
 * Se agrego secuencia de leds de boot (inicio)
 * Los sensores magneticos 2 al 6 ya no son tomados en cuenta

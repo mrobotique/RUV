@@ -123,9 +123,14 @@ void init_pattern(){
                         FastLED.show(int(max_intensity/3.0)); //estaba muy intenso
                 }
                 LedCount++;
+                if (LedCount < seg6 - 3) beeper.Trigger(ONE_BEEP);
+                if (LedCount >= seg6 - 3) beeper.Trigger(TWO_BEEP);
+                if (LedCount > seg6 - 1) beeper.Trigger(BEEP_ON);
+
                 if (LedCount > seg6) {
                         LedCount = 0;
                         intensity = min_intensity; //intensity cant be < min_intensity
+                        beeper.Trigger(BEEP_OFF);
                         operation_mode = mode_auto_on;
                         last_millis = millis();
                         //Asegurarse que el timer esta parado
@@ -140,11 +145,15 @@ void auto_pattern(){
 
                 for (int i=seg0; i<seg6; i++) {
                         if(sensor_state.pir_status != 0) {
-                                if(sensor_state.pir_transition != 0)
+                                if(sensor_state.pir_transition != 0){
                                         //Si los PIR detectan a alguien, entonces amarillo y la deteccion esta activa
                                         leds[i] = CRGB::OrangeRed;
-                                else //La deteccion no esta activa y pronto se van a reiniciar la UV
+                                        beeper.Trigger(CONTINOUS_BEEP);
+                                  }
+                                else{ //La deteccion no esta activa y pronto se van a reiniciar la UV
                                         leds[i] = CRGB::DeepSkyBlue;
+                                        beeper.Trigger(BEEP_OFF);
+                                    }
                         }
                         else{
                                 //Si los PIR estan  ok entonces es morado
@@ -195,7 +204,7 @@ void manual_push_pattern(){
 void manual_pattern(SENSOR_STRUCT sensors){
         if (!pir_timeout) {  //Si el timeout de los pir no esta activo haz normal
                 if(timer_count == 0) {
-                        if(sensors.magnetic_6 == 0) {
+                        if((sensor_state.magnetic_1 == 0) && (sensor_state.magnetic_2 == 0)) {
                                 for(int i=seg0; i<seg6; i++) {
                                         leds[i] = CRGB::Green;
                                 }
@@ -222,7 +231,7 @@ void manual_pattern(SENSOR_STRUCT sensors){
         }
         else{ //si llegamos aqui por que el PIR llego a un timeout, entonces avisa (narajna)
               // y espera a que se resetie el color apretando cualquier boton
-                if ((digitalRead(DEADMAN_Pin) == 0) || (auto_button.clicks != 0)) pir_timeout = false;
+                if ((digitalRead(DEADMAN1_Pin) == 0) || (digitalRead(DEADMAN2_Pin) == 0) || (auto_button.clicks != 0)) pir_timeout = false;
                 for(int i=seg0; i<seg6; i++) {
                         leds[i] = CRGB::OrangeRed;
                 }

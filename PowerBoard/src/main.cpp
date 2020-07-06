@@ -34,6 +34,8 @@ void setup() {
         Serial.begin(115200); //Regular serial port -- Terminal/debug/program
         GUISerial.begin(115200); //Serial port for GUI
         operation_mode = mode_boot;
+        activity_led.Update_mode(3);
+        beeper.Trigger(3);
 }
 
 
@@ -42,8 +44,10 @@ void loop() {
         sensor_state = sensors.read_sensors(operation_mode);
         SerialDataSender.Update(sensor_state);
         LedsIndicadores.Update(operation_mode, sensor_state);
-        user_button_update(LedsIndicadores);
+        user_button_update(LedsIndicadores, gpio);
         safety_functions();
         lamparas_manual(gpio);
         lamparas_auto(gpio);
+        activity_led.Update();
+        gpio.digitalWrite(BUZZER,beeper.Update());
 }

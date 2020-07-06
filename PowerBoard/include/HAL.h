@@ -12,6 +12,12 @@ https://github.com/cosmikwolf/Bounce2mcp.git
 #include <Arduino.h>
 #include "FastLED.h"
 #include "ClickButton.h"
+#include "uvsafe_blinker.h"
+#include "uvsafe_buzzer.h"
+
+
+Flasher activity_led(5);
+UVBuzzer beeper;
 
 //operation modes
 enum uvs_mode{
@@ -36,6 +42,8 @@ unsigned long last_click_update; //timer para decidir cuando pasar a modo basal
 
 /*** PIR ***/
 unsigned long last_pir_time = millis();
+//On-board LED
+#define BUILTIN_LED 5
 
 //LED TypicalLEDStrip
 #define LED_PIN     7
@@ -50,33 +58,34 @@ CRGB leds[NUM_LEDS]; //Instance
 #define PIR3_Pin 12
 #define PIR4_Pin 14
 //Deadman switch
-#define DEADMAN_Pin 8
+#define DEADMAN1_Pin 8
+#define DEADMAN2_Pin 6
 //Auto switch
 #define AUTO_Pin 9
 
 //Relay outputs
 //Connected to the MCP23017
 //GPA0 to GPA7
-#define LAMP1 0
-#define LAMP2 1
-#define LAMP3 2
-#define LAMP4 3
-#define LAMP5 4
-#define LAMP6 5
-#define LAMP7 6
-#define LAMP8 7
+#define LAMP1 5
+#define LAMP2 4
+#define LAMP3 3
+#define LAMP4 2
+#define LAMP5 1
+#define LAMP6 0
+#define LAMP_DEADMAN 6
+#define LAMP_AUTO 7
 
+//GPB
 //Magnetic sensors inputs
 #define MAGNETIC1 8
 #define MAGNETIC2 9
-#define MAGNETIC3 10
-#define MAGNETIC4 11
-#define MAGNETIC5 12
-#define MAGNETIC6 13
+//buzzer
+#define BUZZER 10
 
 //Struct Sensores
 struct SENSOR_STRUCT{
-  int deadman_sw;
+  int deadman1_sw;
+  int deadman2_sw;
   int pir_1;
   int pir_2;
   int pir_3;
@@ -85,18 +94,14 @@ struct SENSOR_STRUCT{
   int pir_transition;
   int magnetic_1;
   int magnetic_2;
-  int magnetic_3;
-  int magnetic_4;
-  int magnetic_5;
-  int magnetic_6;
   int lamp_1; //It is possible to read the output status.
   int lamp_2; //So, lets read the lamps staus
   int lamp_3;
   int lamp_4;
   int lamp_5;
   int lamp_6;
-  int lamp_7;
-  int lamp_8;
+  int lamp_deadman;
+  int lamp_auto;
 } sensor_state;
 
 //Struct outputs
@@ -107,8 +112,8 @@ struct LAMP_STRUCT{
   int lamp_4;
   int lamp_5;
   int lamp_6;
-  int lamp_7;
-  int lamp_8;
+  int lamp_deadman;
+  int lamp_auto;
 }lamp_state;
 
 //The start button is kind of special so,
@@ -130,33 +135,29 @@ gpio.pinMode(LAMP3, OUTPUT);
 gpio.pinMode(LAMP4, OUTPUT);
 gpio.pinMode(LAMP5, OUTPUT);
 gpio.pinMode(LAMP6, OUTPUT);
-gpio.pinMode(LAMP7, OUTPUT);
-gpio.pinMode(LAMP8, OUTPUT);
+gpio.pinMode(LAMP_DEADMAN, OUTPUT);
+gpio.pinMode(LAMP_AUTO, OUTPUT);
+gpio.pinMode(BUZZER, OUTPUT);
 //turn off all the gpios*/
 for (int i=0; i<=8;i++){
   gpio.digitalWrite(i,0);
 }
+// turn off the buzzer
+gpio.digitalWrite(BUZZER,0);
 
 //Inputs
 gpio.pinMode(MAGNETIC1, INPUT);
 gpio.pullUp(MAGNETIC1, HIGH);  // turn on a 100K pullup internally
 gpio.pinMode(MAGNETIC2, INPUT);
 gpio.pullUp(MAGNETIC2, HIGH);  // turn on a 100K pullup internally
-gpio.pinMode(MAGNETIC3, INPUT);
-gpio.pullUp(MAGNETIC3, HIGH);  // turn on a 100K pullup internally
-gpio.pinMode(MAGNETIC4, INPUT);
-gpio.pullUp(MAGNETIC4, HIGH);  // turn on a 100K pullup internally
-gpio.pinMode(MAGNETIC5, INPUT);
-gpio.pullUp(MAGNETIC5, HIGH);  // turn on a 100K pullup internally
-gpio.pinMode(MAGNETIC6, INPUT);
-gpio.pullUp(MAGNETIC6, HIGH);  // turn on a 100K pullup internally
 
 //Now the Microcontroller Inputs
 pinMode(PIR1_Pin, INPUT_PULLUP);
 pinMode(PIR2_Pin, INPUT_PULLUP);
 pinMode(PIR3_Pin, INPUT_PULLUP);
 pinMode(PIR4_Pin, INPUT_PULLUP);
-pinMode(DEADMAN_Pin, INPUT_PULLUP);
+pinMode(DEADMAN1_Pin, INPUT_PULLUP);
+pinMode(DEADMAN2_Pin, INPUT_PULLUP);
 //Microcontroller outputs
 //Outputs for future applications
 

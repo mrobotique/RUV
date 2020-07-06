@@ -31,20 +31,16 @@ void lamparas_auto(Adafruit_MCP23017 gpio){
                         lamp_state.lamp_4 = 0;
                         lamp_state.lamp_5 = 0;
                         lamp_state.lamp_6 = 0;// En modo MANUAL apagado por default
-                        lamp_state.lamp_7 = 0; //relay auxiliar para futuras aplicaciones
-                        lamp_state.lamp_8 = 0; // relay auxiliar para futuras aplicaciones
                 }
                 else{
 
                         expo_timer.start();
-                        lamp_state.lamp_1 = 1 * sensor_state.magnetic_1;
-                        lamp_state.lamp_2 = 1 * sensor_state.magnetic_2;
-                        lamp_state.lamp_3 = 1 * sensor_state.magnetic_3;
-                        lamp_state.lamp_4 = 1 * sensor_state.magnetic_4;
-                        lamp_state.lamp_5 = 1 * sensor_state.magnetic_5;
-                        lamp_state.lamp_6 = 1 * sensor_state.magnetic_6;
-                        lamp_state.lamp_7 = 0; //relay auxiliar para futuras aplicaciones
-                        lamp_state.lamp_8 = 0; // relay auxiliar para futuras aplicaciones
+                        lamp_state.lamp_1 = 1;
+                        lamp_state.lamp_2 = 1;
+                        lamp_state.lamp_3 = 1;
+                        lamp_state.lamp_4 = 1;
+                        lamp_state.lamp_5 = 1;
+                        lamp_state.lamp_6 = 1;
                 }
                 write_lamps(lamp_state, gpio);
         }
