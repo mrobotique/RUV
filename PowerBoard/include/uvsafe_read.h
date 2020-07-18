@@ -18,9 +18,11 @@ bool run (int sensor_){
         if (sensor_ != 0) {
                 pir_state = false;
                 last_update = millis();
+
         }
         else{
                 // si ya esperamos mas de lo que queremos esperar para reactivar las lamparas
+
                 if((millis() - last_update) > time_delay) {
                         pir_state = true;
                 }
@@ -86,6 +88,13 @@ Debounce pir_deb_2 = Debounce(PirDebouncingTime);
 Debounce pir_deb_3 = Debounce(PirDebouncingTime);
 Debounce pir_deb_4 = Debounce(PirDebouncingTime);
 
+//Debounce para los beeps
+#define BEEP_DEBOUNCE 50
+Debounce auto_button_deb = Debounce(BEEP_DEBOUNCE); //Este esta fijo por que solo quiero hacer un peque~o debounce fijo
+Debounce beep_deadman1_deb = Debounce(BEEP_DEBOUNCE); //Este esta fijo por que solo quiero hacer un peque~o debounce fijo
+Debounce beep_deadman2_deb = Debounce(BEEP_DEBOUNCE); //Este esta fijo por que solo quiero hacer un peque~o debounce fijo
+
+
 Debounce deadman_deb = Debounce(DeadmanDebouncingTime);
 
 After_Pir after_pir = After_Pir(AFTER_PIR);
@@ -99,41 +108,49 @@ ReadSensors(SENSOR_STRUCT _sensor_state, Adafruit_MCP23017 _gpio) {
 int last_beep_deadman = 1;
 int last_beep_deadman1 = 1;
 int last_beep_deadman2 = 1;
+int beep_deadman1 = 1;
+int beep_deadman2 = 1;
+
 SENSOR_STRUCT read_sensors(uvs_mode current_mode) {
         /*
            This function reads all the declared sensors
            :return: struct conteniendo el estado de los sensores
            :rtype: SENSOR_STRUCT
          */
+        sensor_state.auto_button = auto_button_deb.Update(digitalRead(AUTO_Pin));
         sensor_state.deadman1_sw = deadman_deb.Update(digitalRead(DEADMAN1_Pin));
         sensor_state.deadman2_sw = deadman_deb.Update(digitalRead(DEADMAN2_Pin));
+        beep_deadman1 = beep_deadman1_deb.Update(digitalRead(DEADMAN1_Pin));
+        beep_deadman2 = beep_deadman2_deb.Update(digitalRead(DEADMAN2_Pin));
 
-        if (!(sensor_state.deadman1_sw && sensor_state.deadman2_sw)) {
-          if (last_beep_deadman != 0){
-            last_beep_deadman = (sensor_state.deadman1_sw && sensor_state.deadman2_sw);
-            beeper.Trigger(TWO_BEEP);
-          }
-        }
-        else
-          last_beep_deadman = (sensor_state.deadman1_sw && sensor_state.deadman2_sw);
-
-          if (!digitalRead(DEADMAN1_Pin)) {
-            if (last_beep_deadman1 != 0){
-              last_beep_deadman1 = digitalRead(DEADMAN1_Pin);
-              beeper.Trigger(ONE_BEEP);
+        if (sensor_state.magnetic_status == 0){
+          if (!(sensor_state.deadman1_sw && sensor_state.deadman2_sw)) {
+            if (last_beep_deadman != 0){
+              last_beep_deadman = (sensor_state.deadman1_sw && sensor_state.deadman2_sw);
+              beeper.Trigger(TWO_BEEP);
             }
           }
           else
-            last_beep_deadman1 = digitalRead(DEADMAN1_Pin);
+            last_beep_deadman = (sensor_state.deadman1_sw && sensor_state.deadman2_sw);
 
-            if (!digitalRead(DEADMAN2_Pin)) {
-              if (last_beep_deadman2 != 0){
-                last_beep_deadman2 = digitalRead(DEADMAN2_Pin);
+            if (!beep_deadman1) {
+              if (last_beep_deadman1 != 0){
+                last_beep_deadman1 = beep_deadman1;
                 beeper.Trigger(ONE_BEEP);
               }
             }
             else
-              last_beep_deadman2 = digitalRead(DEADMAN2_Pin);
+              last_beep_deadman1 = beep_deadman1;
+
+              if (!beep_deadman2) {
+                if (last_beep_deadman2 != 0){
+                  last_beep_deadman2 = beep_deadman2;
+                  beeper.Trigger(ONE_BEEP);
+                }
+              }
+              else
+                last_beep_deadman2 = beep_deadman2;
+        }
 
         sensor_state.pir_1 = pir_deb_1.Update(digitalRead(PIR1_Pin));
         sensor_state.pir_2 = pir_deb_2.Update(digitalRead(PIR2_Pin));
@@ -144,8 +161,18 @@ SENSOR_STRUCT read_sensors(uvs_mode current_mode) {
           sensor_state.pir_status = after_pir.run(sensor_state.pir_transition);
         else
           sensor_state.pir_status =   sensor_state.pir_transition;
+
         sensor_state.magnetic_1 = mag_deb_1.Update(gpio.digitalRead(MAGNETIC1));
         sensor_state.magnetic_2 = mag_deb_2.Update(gpio.digitalRead(MAGNETIC2));
+        if((sensor_state.magnetic_1 == 0 ) and (sensor_state.magnetic_2 == 0)){
+          sensor_state.magnetic_status = 0;
+        }
+        else if ((sensor_state.magnetic_1 == 1 ) and (sensor_state.magnetic_2 == 1)){
+          sensor_state.magnetic_status = 1;
+        }
+        else{
+          sensor_state.magnetic_status = -1;
+        }
         sensor_state.lamp_1 = gpio.digitalRead(LAMP1);
         sensor_state.lamp_2 = gpio.digitalRead(LAMP2);
         sensor_state.lamp_3 = gpio.digitalRead(LAMP3);

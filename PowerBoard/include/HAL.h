@@ -86,6 +86,7 @@ CRGB leds[NUM_LEDS]; //Instance
 struct SENSOR_STRUCT{
   int deadman1_sw;
   int deadman2_sw;
+  int auto_button;
   int pir_1;
   int pir_2;
   int pir_3;
@@ -94,6 +95,7 @@ struct SENSOR_STRUCT{
   int pir_transition;
   int magnetic_1;
   int magnetic_2;
+  int magnetic_status;
   int lamp_1; //It is possible to read the output status.
   int lamp_2; //So, lets read the lamps staus
   int lamp_3;

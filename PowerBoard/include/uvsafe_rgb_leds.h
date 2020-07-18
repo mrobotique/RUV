@@ -29,7 +29,7 @@ unsigned long previousMillis;
 //tiempo de inicio (cuenta regresiva)
 unsigned long init_time = TIEMPO_INICIO; //definido en uvsafe_user_definitions
 //tiempo por segmento = tiempo de inicio / total de leds
-unsigned long init_time_segment = int (init_time/seg6);
+unsigned long init_time_segment = int (init_time/TOTAL_LEDS);
 
 
 public:
@@ -118,16 +118,16 @@ void init_pattern(){
 
         if ((millis() - last_millis) > init_time_segment) {
                 last_millis = millis();
-                if (LedCount<seg6) {
+                if (LedCount<TOTAL_LEDS) {
                         leds[LedCount] = CRGB::DeepSkyBlue;
                         FastLED.show(int(max_intensity/3.0)); //estaba muy intenso
                 }
                 LedCount++;
-                if (LedCount < seg6 - 3) beeper.Trigger(ONE_BEEP);
-                if (LedCount >= seg6 - 3) beeper.Trigger(TWO_BEEP);
-                if (LedCount > seg6 - 1) beeper.Trigger(BEEP_ON);
+                if (LedCount < TOTAL_LEDS - 3) beeper.Trigger(ONE_BEEP);
+                if (LedCount >= TOTAL_LEDS - 3) beeper.Trigger(TWO_BEEP);
+                if (LedCount > TOTAL_LEDS - 1) beeper.Trigger(BEEP_ON);
 
-                if (LedCount > seg6) {
+                if (LedCount > TOTAL_LEDS) {
                         LedCount = 0;
                         intensity = min_intensity; //intensity cant be < min_intensity
                         beeper.Trigger(BEEP_OFF);
@@ -143,20 +143,21 @@ void auto_pattern(){
         if ((millis() - last_millis) > fadeDelay) {
                 last_millis = millis();
 
-                for (int i=seg0; i<seg6; i++) {
+                for (int i=0; i<TOTAL_LEDS; i++) {
                         if(sensor_state.pir_status != 0) {
                                 if(sensor_state.pir_transition != 0){
                                         //Si los PIR detectan a alguien, entonces amarillo y la deteccion esta activa
-                                        leds[i] = CRGB::OrangeRed;
+                                        leds[i] = 0xCFCB00; //amarillo bob esponja
                                         beeper.Trigger(CONTINOUS_BEEP);
                                   }
                                 else{ //La deteccion no esta activa y pronto se van a reiniciar la UV
                                         leds[i] = CRGB::DeepSkyBlue;
-                                        beeper.Trigger(BEEP_OFF);
+                                        beeper.Trigger(POST_PIR);
                                     }
                         }
                         else{
                                 //Si los PIR estan  ok entonces es morado
+                                beeper.Trigger(BEEP_OFF);
                                 leds[i] = CRGB::Purple;
                         }
                 }
@@ -180,7 +181,7 @@ void manual_push_pattern(){
         if ((millis() - last_millis) > fadeDelay) {
                 last_millis = millis();
 
-                for (int i=seg0; i<seg6; i++) {
+                for (int i=0; i<TOTAL_LEDS; i++) {
                         leds[i] = CRGB::Purple;
                 }
 
@@ -204,18 +205,27 @@ void manual_push_pattern(){
 void manual_pattern(SENSOR_STRUCT sensors){
         if (!pir_timeout) {  //Si el timeout de los pir no esta activo haz normal
                 if(timer_count == 0) {
-                        if((sensor_state.magnetic_1 == 0) && (sensor_state.magnetic_2 == 0)) {
-                                for(int i=seg0; i<seg6; i++) {
-                                        leds[i] = CRGB::Green;
-                                }
-                        }
-                        else{
-                                for(int i=seg0; i<seg6; i++) {
-                                        leds[i] = CRGB::Red;
-                                }
-                        }
+                        switch (sensor_state.magnetic_status) {
+                          case 0: //los dos sensores magneticos detectaron algo --> el escudo esta puesto, modo manual disponible
+                            for(int i=0; i<TOTAL_LEDS; i++) {
+                                    leds[i] = CRGB::Green;
+                            }
+                            break;
 
+                          case 1: //los dos sensores magneticos NO detectan nada --> el escudo no esta puesto, modo auto disponible
+                            for(int i=0; i<TOTAL_LEDS; i++) {
+                                    leds[i] = CRGB::OrangeRed;
+                            }
+                            break;
+
+                          default: //para los demas casos (error)
+                            for(int i=0; i<TOTAL_LEDS; i++) {
+                                    leds[i] = CRGB::Red;
+                            }
+                            break;
+                        }//case
                 }
+
                 else{
 
                         for (unsigned long i=0; i<timer_count; i++) {
@@ -225,15 +235,15 @@ void manual_pattern(SENSOR_STRUCT sensors){
                         for (int i=timer_count; i<NUM_LEDS; i++) {
                                 leds[i] = CRGB::Black;
                         }
-
                         FastLED.show(int(max_intensity)); //demasiado intenso
                 }
         }
-        else{ //si llegamos aqui por que el PIR llego a un timeout, entonces avisa (narajna)
+
+        else{ //si llegamos aqui por que el PIR llego a un timeout, entonces avisa (amarillo bob esponja)
               // y espera a que se resetie el color apretando cualquier boton
                 if ((digitalRead(DEADMAN1_Pin) == 0) || (digitalRead(DEADMAN2_Pin) == 0) || (auto_button.clicks != 0)) pir_timeout = false;
-                for(int i=seg0; i<seg6; i++) {
-                        leds[i] = CRGB::OrangeRed;
+                for(int i=0; i<TOTAL_LEDS; i++) {
+                        leds[i] = 0xCFCB00; //Amarillo BobEsponja
                 }
         }
         FastLED.show(64);
@@ -241,14 +251,14 @@ void manual_pattern(SENSOR_STRUCT sensors){
 
 void confirm_push(bool on){
         if(on) {
-                for (int i=seg0; i<seg6; i++) {
+                for (int i=0; i<TOTAL_LEDS; i++) {
                         leds[i] = CRGB::DeepSkyBlue;
                 }
                 FastLED.show(int(max_intensity/3.0)); //demasiado intenso
         }
         else
         {
-                for (int i=seg0; i<seg6; i++) {
+                for (int i=0; i<TOTAL_LEDS; i++) {
                         leds[i] = CRGB::Black;
                 }
                 FastLED.show(min_intensity);

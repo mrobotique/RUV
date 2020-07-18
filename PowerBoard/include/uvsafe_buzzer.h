@@ -1,6 +1,7 @@
 #define ONE_BEEP 2
 #define TWO_BEEP 3
 #define CONTINOUS_BEEP 4
+#define POST_PIR 5
 #define BEEP_ON 1
 #define BEEP_OFF 0
 
@@ -40,6 +41,9 @@ public:
                   case 4:
                     beeps = 3;
                     break;
+                    case 5:
+                      beeps = 3;
+                      break;
                   default:
                     beeps = 0;
                     break;
@@ -68,6 +72,10 @@ public:
                         break;
 
                 case 4: //equal on off fast
+                        OnTime = 800;
+                        OffTime = 3000;
+                        break;
+                case 5: //equal on off fast
                         OnTime = 100;
                         OffTime = 900;
                         break;

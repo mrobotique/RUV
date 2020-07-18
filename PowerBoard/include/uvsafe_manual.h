@@ -6,8 +6,12 @@
 
 
 void lamparas_manual(Adafruit_MCP23017 gpio){
+        //control del led de los deadman
+        if (sensor_state.magnetic_status == 0) lamp_state.lamp_deadman = 1;
+        else lamp_state.lamp_deadman = 0;
+        //Control de las lamparas uv
         if((operation_mode == mode_manual) || (operation_mode == mode_manual_push)) {
-                if((sensor_state.deadman1_sw == 0) && (sensor_state.deadman2_sw == 0) && (sensor_state.magnetic_1 == 0) && (sensor_state.magnetic_2 == 0)) {
+                if((sensor_state.deadman1_sw == 0) && (sensor_state.deadman2_sw == 0) && (sensor_state.magnetic_status == 0)) {
                         lamp_state.lamp_1 = 1;
                         lamp_state.lamp_2 = 1;
                         lamp_state.lamp_3 = 1;

@@ -18,6 +18,7 @@
 #include "uvsafe_user_button.h"
 #include "uvsafe_manual.h"
 #include "uvsafe_auto.h"
+#include "uvsafe_init_test.h"
 
 Adafruit_MCP23017 gpio;
 SoftwareSerial GUISerial(2, 3); // RX, TX
@@ -25,17 +26,17 @@ DataSender SerialDataSender(sensor_state);
 RGBLeds LedsIndicadores(mode_manual); //inicializa siempre en manual
 ReadSensors sensors(sensor_state, gpio);
 
-
 void setup() {
-        delay(1500); //for system stabilization
         wdt_disable(); //deshabilitar watchdog para no tener interrupciones
-        wdt_enable(WDTO_4S);// nunca usar menos de 250 ms si no se va a resetar sin control
         init_gpio(gpio);
         Serial.begin(115200); //Regular serial port -- Terminal/debug/program
         GUISerial.begin(115200); //Serial port for GUI
         operation_mode = mode_boot;
         activity_led.Update_mode(3);
-        beeper.Trigger(3);
+        auto_button.debounceTime = AUTO_DEBOUNCE;
+        init_test(gpio);
+        beeper.Trigger(TWO_BEEP);
+        wdt_enable(WDTO_4S);// nunca usar menos de 250 ms si no se va a resetar sin control
 }
 
 

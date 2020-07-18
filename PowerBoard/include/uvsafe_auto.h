@@ -14,7 +14,7 @@ Countdown expo_timer(EXPOSITION_TIME, uvsafe_timer_Complete);  //300 seg (5min) 
 
 
 void lamparas_auto(Adafruit_MCP23017 gpio){
-        if (operation_mode == mode_auto_on) {
+        if ((operation_mode == mode_auto_on) && (sensor_state.magnetic_status == 1)) {
                 if (expo_timer.is_running() != true) {
                         expo_timer.reset();
                         expo_timer.new_time(nuevo_tiempo_exposicion); //nuevo_tiempo_exposicion esta definido en uvsafe_user_button.h

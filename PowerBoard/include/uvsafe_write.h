@@ -16,6 +16,8 @@ void write_lamps(LAMP_STRUCT lamp_state, Adafruit_MCP23017 gpio){
         gpio.digitalWrite(LAMP4, lamp_state.lamp_4);
         gpio.digitalWrite(LAMP5, lamp_state.lamp_5);
         gpio.digitalWrite(LAMP6, lamp_state.lamp_6);
+        gpio.digitalWrite(LAMP_DEADMAN,lamp_state.lamp_deadman);
+        gpio.digitalWrite(LAMP_AUTO, lamp_state.lamp_auto);
 }
 
 void chenille_test(Adafruit_MCP23017 gpio){
