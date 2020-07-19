@@ -71,7 +71,6 @@ int Update(int _reading) {
 };
 
 
-
 class ReadSensors {
 SENSOR_STRUCT sensor_state;
 Adafruit_MCP23017 gpio;
@@ -179,6 +178,8 @@ SENSOR_STRUCT read_sensors(uvs_mode current_mode) {
         sensor_state.lamp_4 = gpio.digitalRead(LAMP4);
         sensor_state.lamp_5 = gpio.digitalRead(LAMP5);
         sensor_state.lamp_6 = gpio.digitalRead(LAMP6);
+        sensor_state.lamp_deadman = gpio.digitalRead(LAMP_DEADMAN);
+        sensor_state.lamp_auto = gpio.digitalRead(LAMP_AUTO);
         return sensor_state;
 }
 

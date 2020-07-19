@@ -34,7 +34,14 @@ void setup() {
         operation_mode = mode_boot;
         activity_led.Update_mode(3);
         auto_button.debounceTime = AUTO_DEBOUNCE;
-        init_test(gpio);
+        if (!digitalRead(AUTO_Pin)) {//Corre el test solo si el boton esta activado
+          beeper.Trigger(ONE_BEEP); //Avisa
+          while (!digitalRead(AUTO_Pin)) //bloquea el asunto hasta que el boton se suelta
+          {
+            gpio.digitalWrite(BUZZER,beeper.Update());
+          }
+          init_test(gpio);
+        }
         beeper.Trigger(TWO_BEEP);
         wdt_enable(WDTO_4S);// nunca usar menos de 250 ms si no se va a resetar sin control
 }
