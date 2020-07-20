@@ -22,13 +22,12 @@ public:
 void Update (SENSOR_STRUCT sensor_state)
 {       //Check size calculator for the array at:
        //https://arduinojson.org/v6/assistant/
-        const size_t capacity = JSON_ARRAY_SIZE(19) + JSON_OBJECT_SIZE(2) + 20;
+        const size_t capacity = JSON_ARRAY_SIZE(20) + JSON_OBJECT_SIZE(1) + 20;
         DynamicJsonDocument doc(capacity);
         // check to see if it's time to send the data
         unsigned long currentMillis = millis();
         if (currentMillis - previousMillis >= data_period) {
                 previousMillis = currentMillis; // Remember the time
-                doc["sensors"] = "all";
                 JsonArray data = doc.createNestedArray("data");
                 data.add(VERSION);
                 data.add(sensor_state.deadman1_sw);
@@ -48,7 +47,7 @@ void Update (SENSOR_STRUCT sensor_state)
                 data.add(sensor_state.lamp_6);
                 data.add(sensor_state.lamp_deadman);
                 data.add(sensor_state.lamp_auto);
-
+                data.add(operation_mode);
                 serializeJson(doc, Serial);
                 Serial.println();
         }

@@ -4,8 +4,8 @@ class Flasher
   // Class Member Variables
   // These are initialized at startup
   int ledPin;      // the number of the LED pin
-  long OnTime;     // milliseconds of on-time
-  long OffTime;    // milliseconds of off-time
+  unsigned long OnTime;     // milliseconds of on-time
+  unsigned long OffTime;    // milliseconds of off-time
 
   // These maintain the current state
   int ledState;             		// ledState used to set the LED

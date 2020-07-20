@@ -9,8 +9,8 @@ class UVBuzzer
 {
         // Class Member Variables
         // These are initialized at startup
-        long OnTime; // milliseconds of on-time
-        long OffTime; // milliseconds of off-time
+        unsigned long OnTime; // milliseconds of on-time
+        unsigned long OffTime; // milliseconds of off-time
         int counter = 0;
         int beeps = 0;
         int mode = 0;

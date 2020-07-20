@@ -241,6 +241,7 @@ void manual_pattern(SENSOR_STRUCT sensors){
 
         else{ //si llegamos aqui por que el PIR llego a un timeout, entonces avisa (amarillo bob esponja)
               // y espera a que se resetie el color apretando cualquier boton
+                beeper.Trigger(BEEP_OFF);
                 if ((digitalRead(DEADMAN1_Pin) == 0) || (digitalRead(DEADMAN2_Pin) == 0) || (auto_button.clicks != 0)) pir_timeout = false;
                 for(int i=0; i<TOTAL_LEDS; i++) {
                         leds[i] = 0xCFCB00; //Amarillo BobEsponja
