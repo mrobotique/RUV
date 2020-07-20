@@ -49,6 +49,9 @@ unsigned long last_click_update; //timer para decidir cuando pasar a modo basal
 
 /*** PIR ***/
 unsigned long last_pir_time = millis();
+//Pir boolean para saber si la lampara se apago por que el pir se activo mucho Tiempo
+bool pir_timeout = false; //el valor se actualiza -> true en uvsafe_safety.h
+
 //On-board LED
 #define BUILTIN_LED 5
 
@@ -173,7 +176,3 @@ pinMode(DEADMAN2_Pin, INPUT_PULLUP);
 //LED Strip  WS2812B
 FastLED.addLeds<WS2812B,LED_PIN,EOrder::GRB>(leds, NUM_LEDS);
 }
-
-//Pir boolean para saber si la lampara se apago por que el pir se activo mucho Tiempo
-bool pir_timeout = false; //el valor se actualiza -> true en uvsafe_safety.h
-last_pir_time = millis();
