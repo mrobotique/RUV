@@ -5,6 +5,8 @@
 #define BEEP_ON 1
 #define BEEP_OFF 0
 
+bool BUZZER_ENABLED = true;
+
 class UVBuzzer
 {
         // Class Member Variables
@@ -86,6 +88,7 @@ public:
         int Update(void)
         {
                 CheckMode();
+                if (BUZZER_ENABLED == false) return 0;
                 if (OnTime == 0) return 0;
                 if (OffTime == 0) return 1;
 
