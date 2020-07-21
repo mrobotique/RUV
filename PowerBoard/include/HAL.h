@@ -15,13 +15,6 @@ https://github.com/cosmikwolf/Bounce2mcp.git
 #include "uvsafe_blinker.h"
 #include "uvsafe_buzzer.h"
 
-/***********************
-*
-* SOFTWARE VERSION
-*
-************************/
-const String VERSION = "V3.0.0";
-/**************************/
 
 Flasher activity_led(5);
 UVBuzzer beeper;

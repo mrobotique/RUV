@@ -8,8 +8,9 @@
 #include <SoftwareSerial.h>
 #include <Wire.h>
 #include <EEPROM.h>
-#include "Adafruit_MCP23017.h"
+#include <Adafruit_MCP23017.h>
 #include "HAL.h"
+#include "uvsafe_version_control.h"
 #include "uvsafe_user_definitions.h"
 #include "uvsafe_read.h"
 #include "uvsafe_write.h"
@@ -20,6 +21,7 @@
 #include "uvsafe_manual.h"
 #include "uvsafe_auto.h"
 #include "uvsafe_init_test.h"
+
 
 Adafruit_MCP23017 gpio;
 SoftwareSerial GUISerial(2, 3); // RX, TX
