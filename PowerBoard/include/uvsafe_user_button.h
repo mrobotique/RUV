@@ -46,11 +46,10 @@ void user_button_update(RGBLeds LedsIndicadores, Adafruit_MCP23017 gpio) {
                           operation_mode = mode_auto_init;
                   }
                   if ((digitalRead(DEADMAN1_Pin) == 0) || (digitalRead(DEADMAN2_Pin) == 0)) timer_count = 0; //si el usuario se arrepiente... le pica al deadman y regresamos a manual normal
-                  if ((auto_button.clicks > 0) && !pir_timeout && (previous_mode != mode_auto_on) && (previous_mode != mode_auto_init)){
+                  if ((auto_button.clicks > 0) && (auto_button.changed) && !pir_timeout && (previous_mode != mode_auto_on) && (previous_mode != mode_auto_init) && (auto_button.depressed == false)){
                           timer_count += 1;
                           if (timer_count > NUM_LEDS) timer_count = 1;
                   }
-
           }
           else{
                   timer_count = 0;
@@ -59,5 +58,5 @@ void user_button_update(RGBLeds LedsIndicadores, Adafruit_MCP23017 gpio) {
   }
 else{
   lamp_state.lamp_auto = 0;
-}
+  }
 }

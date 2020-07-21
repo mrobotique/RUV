@@ -34,7 +34,7 @@ unsigned long fadeDelay = 1; //en mS
 #define MAGNETIC_DEBOUNCE 800 //ms
 #define PIR_DEBOUNCE 100 //ms
 #define DEADMAN_DEBOUNCE 1000 //ms
-#define AUTO_DEBOUNCE 30 //ms
+#define AUTO_DEBOUNCE 100 //ms
 
 
 /*********** PIR ********************/
