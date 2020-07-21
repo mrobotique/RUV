@@ -31,6 +31,7 @@ void setup() {
         bool run_test = false;
         bool configure_buzzer = false;
         int addr = 0; //eeprom address to save the data
+        bool BUZZER_ENABLED_BUFFER;
 
         wdt_disable(); //deshabilitar watchdog para no tener interrupciones
         init_gpio(gpio);
@@ -52,17 +53,17 @@ void setup() {
         if (!digitalRead(DEADMAN1_Pin)){
              configure_buzzer = true;
              if (EEPROM.read(addr) == false){
-               BUZZER_ENABLED = true;
-               EEPROM.write(addr, true);
+               BUZZER_ENABLED_BUFFER = true;
              }
              else{
-               BUZZER_ENABLED = false;
-               EEPROM.write(addr, false);
+               BUZZER_ENABLED_BUFFER = false;
              }
+             EEPROM.write(addr, BUZZER_ENABLED_BUFFER);
          }
         if (run_test || configure_buzzer){
         //Corre el test solo si el boton esta activado
           beeper.Trigger(ONE_BEEP); //Avisa
+          BUZZER_ENABLED = true;
           while (!digitalRead(AUTO_Pin) || !digitalRead(DEADMAN1_Pin)) //bloquea el asunto hasta que los botones se sueltan
           {
             gpio.digitalWrite(BUZZER,beeper.Update());
@@ -71,6 +72,7 @@ void setup() {
         }
         beeper.Trigger(TWO_BEEP);
         wdt_enable(WDTO_4S);// nunca usar menos de 250 ms si no se va a resetar sin control
+        BUZZER_ENABLED = BUZZER_ENABLED_BUFFER;
 }
 
 void loop() {

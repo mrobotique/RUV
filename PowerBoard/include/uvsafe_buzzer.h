@@ -86,8 +86,7 @@ public:
         }
 
         int Update(void)
-        {
-                CheckMode();
+        {       CheckMode();
                 if (BUZZER_ENABLED == false) return 0;
                 if (OnTime == 0) return 0;
                 if (OffTime == 0) return 1;

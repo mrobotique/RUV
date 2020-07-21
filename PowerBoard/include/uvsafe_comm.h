@@ -8,7 +8,7 @@
 #include <ArduinoJson.h>
 
 class DataSender {
-unsigned long data_period = 250;    // tiempo en milisegs
+unsigned long data_period = 125;    // tiempo en milisegs
 SENSOR_STRUCT sensor_state;
 unsigned long previousMillis;     // will store last time LED was updated
 
@@ -22,13 +22,14 @@ public:
 void Update (SENSOR_STRUCT sensor_state)
 {       //Check size calculator for the array at:
        //https://arduinojson.org/v6/assistant/
-        const size_t capacity = JSON_ARRAY_SIZE(20) + JSON_OBJECT_SIZE(1) + 20;
+        const size_t capacity = JSON_ARRAY_SIZE(31) + JSON_OBJECT_SIZE(1) + 20;
         DynamicJsonDocument doc(capacity);
         // check to see if it's time to send the data
         unsigned long currentMillis = millis();
         if (currentMillis - previousMillis >= data_period) {
                 previousMillis = currentMillis; // Remember the time
                 JsonArray data = doc.createNestedArray("data");
+                data.add(millis());
                 data.add(VERSION);
                 data.add(sensor_state.deadman1_sw);
                 data.add(sensor_state.deadman2_sw);
@@ -47,6 +48,7 @@ void Update (SENSOR_STRUCT sensor_state)
                 data.add(sensor_state.lamp_6);
                 data.add(sensor_state.lamp_deadman);
                 data.add(sensor_state.lamp_auto);
+                data.add(BUZZER_ENABLED);
                 data.add(operation_mode);
                 serializeJson(doc, Serial);
                 Serial.println();
