@@ -29,7 +29,7 @@ void Update (SENSOR_STRUCT sensor_state)
                 previousMillis = currentMillis; // Remember the time
                 JsonArray data = doc.createNestedArray("data");
                 data.add(millis());
-                data.add(VERSION);
+                data.add(FIRMWARE_VERSION);
                 data.add(TARJETA);
                 data.add(sensor_state.deadman_sw);
                 data.add(sensor_state.pir_1);
