@@ -112,6 +112,7 @@ void boot_pattern(){
                 delay(50);
         }
         operation_mode = mode_manual;
+        last_pir_time = millis();
         pir_timeout = false;
 }
 
