@@ -88,10 +88,12 @@ Debounce pir_deb_3 = Debounce(PirDebouncingTime);
 Debounce pir_deb_4 = Debounce(PirDebouncingTime);
 
 //Debounce para los beeps
-#define BEEP_DEBOUNCE 50
-Debounce auto_button_deb = Debounce(BEEP_DEBOUNCE); //Este esta fijo por que solo quiero hacer un peque~o debounce fijo
-Debounce beep_deadman1_deb = Debounce(BEEP_DEBOUNCE); //Este esta fijo por que solo quiero hacer un peque~o debounce fijo
-Debounce beep_deadman2_deb = Debounce(BEEP_DEBOUNCE); //Este esta fijo por que solo quiero hacer un peque~o debounce fijo
+//Todos tiene 10 ms mas que lo necesario para hacer el dbounce del beep
+//sea mas largo que el debounce del boton y asi, cuando el beep suena, es
+//seguro que el boton ya se registro.
+Debounce auto_button_deb = Debounce(AUTO_DEBOUNCE + 10); //Este esta fijo por que solo quiero hacer un peque~o debounce fijo
+Debounce beep_deadman1_deb = Debounce(DEADMAN_DEBOUNCE + 10); //Este esta fijo por que solo quiero hacer un peque~o debounce fijo
+Debounce beep_deadman2_deb = Debounce(DEADMAN_DEBOUNCE + 10); //Este esta fijo por que solo quiero hacer un peque~o debounce fijo
 
 
 Debounce deadman_deb = Debounce(DeadmanDebouncingTime);
