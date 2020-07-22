@@ -32,5 +32,10 @@ void safety_functions(void){
           operation_mode = mode_manual;
           beeper.Trigger(BEEP_OFF);
         }
+        // Si estamos en fin de ciclo y un boton se aprieta entonces el beeper se calla y pasamos a modo manual.
+        if (((digitalRead(DEADMAN1_Pin) == 0) || (digitalRead(DEADMAN2_Pin) == 0) || (digitalRead(AUTO_Pin) == 0) ) && (operation_mode == mode_cycle_end)) {
+            operation_mode = mode_manual;
+            beeper.Trigger(BEEP_OFF);
+        }
         check_pir();
 }

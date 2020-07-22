@@ -26,7 +26,8 @@ enum uvs_mode{
   mode_auto_init,
   mode_manual,
   mode_manual_push,
-  mode_test
+  mode_test,
+  mode_cycle_end,
 } operation_mode;
 
 //Timer modes

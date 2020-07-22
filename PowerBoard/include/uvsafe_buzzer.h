@@ -46,6 +46,9 @@ public:
                     case 5:
                       beeps = 3;
                       break;
+                    case 6:
+                      beeps = 3;
+                      break;
                   default:
                     beeps = 0;
                     break;
@@ -55,31 +58,35 @@ public:
 
         void CheckMode(){
                 switch (mode) {
-                case 0: //LED Off
+                case 0: //Beep off
                         OnTime = 0;
                         break;
 
-                case 1: //beeper on constant tone
+                case 1: //beep constatemente on
                         OffTime = 0;
                         break;
 
-                case 2: //Short flash
+                case 2: //caso para un solo beep
                         OnTime = 35;
                         OffTime = 35;
                         break;
 
-                case 3: //Double short flash
+                case 3: //bip bip
                         OnTime = 35;
                         OffTime = 35;
                         break;
 
-                case 4: //equal on off fast
+                case 4: //beeeep shhhhhhhhh beeeep
                         OnTime = 800;
                         OffTime = 3000;
                         break;
-                case 5: //equal on off fast
+                case 5: //beep shhhhh beep
                         OnTime = 100;
                         OffTime = 900;
+                        break;
+                case 6: //despues de acabar un ciclo bip y shhhhhhhhhh
+                        OnTime = 35;
+                        OffTime = 5000;
                         break;
 
                 }

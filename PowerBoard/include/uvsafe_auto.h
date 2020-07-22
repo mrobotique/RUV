@@ -22,7 +22,6 @@ void lamparas_auto(Adafruit_MCP23017 gpio){
                         expo_timer.start();
                 }
                 expo_timer.run();
-
                 if (sensor_state.pir_status != 0) {
                         expo_timer.pause();
                         lamp_state.lamp_1 = 0;
@@ -33,7 +32,6 @@ void lamparas_auto(Adafruit_MCP23017 gpio){
                         lamp_state.lamp_6 = 0;// En modo MANUAL apagado por default
                 }
                 else{
-
                         expo_timer.start();
                         lamp_state.lamp_1 = 1;
                         lamp_state.lamp_2 = 1;
@@ -51,5 +49,7 @@ void lamparas_auto(Adafruit_MCP23017 gpio){
 
 void uvsafe_timer_Complete(void){
         expo_timer.reset();
-        operation_mode = mode_manual;
+        operation_mode = mode_cycle_end;
+        beeper.Trigger(FIN_DE_CICLO);
+
 }

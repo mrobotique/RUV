@@ -45,6 +45,7 @@ void Update(uvs_mode _current_mode, SENSOR_STRUCT sensors){
         case mode_boot:
                 boot_pattern();
                 break;
+
         case mode_manual:
                 if(previous_mode != current_mode) {
                         intensity = 0;
@@ -53,8 +54,18 @@ void Update(uvs_mode _current_mode, SENSOR_STRUCT sensors){
                         previous_mode = current_mode;
                 }
                 manual_pattern(sensors);
-
                 break;
+
+        case mode_cycle_end:
+                if(previous_mode != current_mode) {
+                        intensity = 0;
+                        LedCount = 0;
+                        FastLED.show(intensity);
+                        previous_mode = current_mode;
+                }
+                manual_pattern(sensors);
+                break;
+
         case mode_auto_init:
                 if(previous_mode != current_mode) {
                         LedCount = 0;
