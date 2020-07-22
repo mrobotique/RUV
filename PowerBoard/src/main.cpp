@@ -7,7 +7,8 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 #include <Wire.h>
-#include "Adafruit_MCP23017.h"
+#include <Adafruit_MCP23017.h>
+#include "uvsafe_version_control.h"
 #include "HAL.h"
 #include "uvsafe_user_definitions.h"
 #include "uvsafe_read.h"
@@ -33,6 +34,7 @@ void setup() {
         init_gpio(gpio);
         Serial.begin(115200); //Regular serial port -- Terminal/debug/program
         GUISerial.begin(115200); //Serial port for GUI
+        auto_button.debounceTime = AUTO_DEBOUNCE;
         operation_mode = mode_boot;
 }
 
