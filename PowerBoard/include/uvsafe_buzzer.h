@@ -1,9 +1,10 @@
+#define BEEP_ON 1
+#define BEEP_OFF 0
 #define ONE_BEEP 2
 #define TWO_BEEP 3
 #define CONTINOUS_BEEP 4
 #define POST_PIR 5
-#define BEEP_ON 1
-#define BEEP_OFF 0
+#define FIN_DE_CICLO 6
 
 bool BUZZER_ENABLED = true;
 
@@ -30,7 +31,6 @@ public:
                 previousMillis = 0;
         }
 
-
         void Trigger(int modes){
                 mode = modes;
                 switch (modes) {
@@ -55,11 +55,11 @@ public:
 
         void CheckMode(){
                 switch (mode) {
-                case 0: //LED OFF
+                case 0: //LED Off
                         OnTime = 0;
                         break;
 
-                case 1: //LED ON
+                case 1: //beeper on constant tone
                         OffTime = 0;
                         break;
 
