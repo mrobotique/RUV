@@ -27,7 +27,6 @@ void Update (SENSOR_STRUCT sensor_state)
         unsigned long currentMillis = millis();
         if (currentMillis - previousMillis >= data_period) {
                 previousMillis = currentMillis; // Remember the time
-                doc["sensors"] = "all";
                 JsonArray data = doc.createNestedArray("data");
                 data.add(millis());
                 data.add(VERSION);
