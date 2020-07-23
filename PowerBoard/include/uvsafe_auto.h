@@ -49,7 +49,5 @@ void lamparas_auto(Adafruit_MCP23017 gpio){
 
 void uvsafe_timer_Complete(void){
         expo_timer.reset();
-        operation_mode = mode_cycle_end;
-        beeper.Trigger(FIN_DE_CICLO);
-
+        operation_mode = mode_manual;
 }
