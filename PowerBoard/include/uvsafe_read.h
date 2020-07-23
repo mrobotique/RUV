@@ -96,7 +96,8 @@ Debounce beep_deadman1_deb = Debounce(DEADMAN_DEBOUNCE + 10); //Este esta fijo p
 Debounce beep_deadman2_deb = Debounce(DEADMAN_DEBOUNCE + 10); //Este esta fijo por que solo quiero hacer un peque~o debounce fijo
 
 
-Debounce deadman_deb = Debounce(DeadmanDebouncingTime);
+Debounce deadman_deb1 = Debounce(DeadmanDebouncingTime);
+Debounce deadman_deb2 = Debounce(DeadmanDebouncingTime);
 
 After_Pir after_pir = After_Pir(AFTER_PIR);
 
@@ -119,8 +120,8 @@ SENSOR_STRUCT read_sensors(uvs_mode current_mode) {
            :rtype: SENSOR_STRUCT
          */
         sensor_state.auto_button = auto_button_deb.Update(digitalRead(AUTO_Pin));
-        sensor_state.deadman1_sw = deadman_deb.Update(digitalRead(DEADMAN1_Pin));
-        sensor_state.deadman2_sw = deadman_deb.Update(digitalRead(DEADMAN2_Pin));
+        sensor_state.deadman1_sw = deadman_deb1.Update(digitalRead(DEADMAN1_Pin));
+        sensor_state.deadman2_sw = deadman_deb2.Update(digitalRead(DEADMAN2_Pin));
         beep_deadman1 = beep_deadman1_deb.Update(digitalRead(DEADMAN1_Pin));
         beep_deadman2 = beep_deadman2_deb.Update(digitalRead(DEADMAN2_Pin));
 
