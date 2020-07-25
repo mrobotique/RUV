@@ -37,10 +37,12 @@ enum timer_mode{
   running
 };
 
+
 /** Relacionado con el boton y el timer ***/
 unsigned long timer_count = 0; //Cuenta cuantas veces se ha clickeado el boton de usuario
 unsigned long nuevo_tiempo_exposicion = 0;
 unsigned long last_click_update; //timer para decidir cuando pasar a modo basal
+unsigned long tiempo_restante; //Global para publicar el timer en el puerto serie
 
 /*** PIR ***/
 unsigned long last_pir_time = millis();

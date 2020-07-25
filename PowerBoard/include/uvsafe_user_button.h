@@ -38,6 +38,7 @@ void user_button_update(RGBLeds LedsIndicadores, Adafruit_MCP23017 gpio) {
                           LedsIndicadores.confirm_push(true);
                           if (timer_count == 0) timer_count = 1; //El tiempo minimo a enviar son cinco minutos
                           nuevo_tiempo_exposicion = timer_count * CINCO_MINUTOS;
+                          tiempo_restante = nuevo_tiempo_exposicion;
                           timer_count = 0;
                           while (auto_button.depressed) { //No hacer nada mientras el usuario no suelta el boton
                                   gpio.digitalWrite(BUZZER,beeper.Update());

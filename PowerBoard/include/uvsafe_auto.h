@@ -31,6 +31,7 @@ void lamparas_auto(Adafruit_MCP23017 gpio){
                 }
                 else{
                         expo_timer.start();
+                        tiempo_restante = expo_timer.get_time() - 1;//se le resta uno para que el t_min == 0.. cuestiones de logica de programacion
                         lamp_state.lamp_1 = 1;
                         lamp_state.lamp_2 = 1;
                         lamp_state.lamp_3 = 1;
@@ -42,6 +43,9 @@ void lamparas_auto(Adafruit_MCP23017 gpio){
         }
         else{
                 expo_timer.reset();
+                if (operation_mode != mode_auto_init){
+                tiempo_restante = 0;
+                }
         }
 }
 
