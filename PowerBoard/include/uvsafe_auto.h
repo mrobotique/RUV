@@ -1,10 +1,8 @@
-
 /*
- *  by: MRO for IWI
+ *  by: MRO for UVSA GROUP
  *  Todos los derechos reservados
- *  Aguascalientes, Mexico. Mayo 2020
+ *  Winnipeg, Manitoba. Canada. Julio 2020
  */
-
 //Prototipo
 void uvsafe_timer_Complete(void);
 
@@ -33,6 +31,7 @@ void lamparas_auto(Adafruit_MCP23017 gpio){
                 }
                 else{
                         expo_timer.start();
+                        tiempo_restante = expo_timer.get_time() - 1;//se le resta uno para que el t_min == 0.. cuestiones de logica de programacion
                         lamp_state.lamp_1 = 1;
                         lamp_state.lamp_2 = 1;
                         lamp_state.lamp_3 = 1;
@@ -44,10 +43,14 @@ void lamparas_auto(Adafruit_MCP23017 gpio){
         }
         else{
                 expo_timer.reset();
+                if (operation_mode != mode_auto_init){
+                tiempo_restante = 0;
+                }
         }
 }
 
 void uvsafe_timer_Complete(void){
         expo_timer.reset();
         operation_mode = mode_manual;
+        beeper.Trigger(FIN_DE_CICLO);
 }

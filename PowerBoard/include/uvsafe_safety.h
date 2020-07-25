@@ -1,8 +1,10 @@
+
 /*
- *  by: MRO for IWI
+ *  by: MRO for UVSA GROUP
  *  Todos los derechos reservados
- *  Aguascalientes, Mexico. Mayo 2020
+ *  Winnipeg, Manitoba. Canada. Julio 2020
  */
+
 
 void check_pir(){
         if ((operation_mode != mode_manual) && (operation_mode != mode_boot)){
@@ -22,6 +24,7 @@ void safety_functions(void){
 //Si algun sensor manual cambia de estado debemos apagar todo y pasar a manual_pattern
         if ((digitalRead(DEADMAN1_Pin) == 0) || (digitalRead(DEADMAN2_Pin) == 0)) {
           if ((operation_mode == mode_auto_on) || (operation_mode == mode_auto_init)) beeper.Trigger(BEEP_OFF);
+          if (beeper.CurrentMode() == FIN_DE_CICLO) beeper.Trigger(ONE_BEEP);
           operation_mode = mode_manual;
         }
         if ((operation_mode != mode_manual) && (auto_button.clicks != 0)) {

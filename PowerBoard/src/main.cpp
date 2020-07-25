@@ -1,8 +1,10 @@
+
 /*
- *  by: MRO for UVSA
+ *  by: MRO for UVSA GROUP
  *  Todos los derechos reservados
- *  Aguascalientes, Mexico. Mayo 2020
+ *  Winnipeg, Manitoba. Canada. Julio 2020
  */
+
 #include <avr/wdt.h>
 #include <Arduino.h>
 #include <SoftwareSerial.h>
@@ -75,7 +77,7 @@ void setup() {
           }
           if (run_test == true) init_test(gpio);
         }
-        beeper.Trigger(TWO_BEEP);
+        beeper.Trigger(TWO_BEEP);        
         wdt_enable(WDTO_4S);// nunca usar menos de 250 ms si no se va a resetar sin control
         BUZZER_ENABLED = BUZZER_ENABLED_BUFFER;
 }

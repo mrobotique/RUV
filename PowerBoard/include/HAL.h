@@ -1,9 +1,11 @@
+/*
+ *  by: MRO for UVSA GROUP
+ *  Todos los derechos reservados
+ *  Winnipeg, Manitoba. Canada. Julio 2020
+ */
+
 /*** HAL file
 HAL: Hardware Abstraction Layer
-by: MRO for IWI
-Todos los derechos reservados
-Aguascalientes, Mexico. Mayo 2020
-
 requiere
 https://github.com/cosmikwolf/Bounce2mcp.git
 ***/
@@ -35,10 +37,12 @@ enum timer_mode{
   running
 };
 
+
 /** Relacionado con el boton y el timer ***/
 unsigned long timer_count = 0; //Cuenta cuantas veces se ha clickeado el boton de usuario
 unsigned long nuevo_tiempo_exposicion = 0;
 unsigned long last_click_update; //timer para decidir cuando pasar a modo basal
+unsigned long tiempo_restante; //Global para publicar el timer en el puerto serie
 
 /*** PIR ***/
 unsigned long last_pir_time = millis();
@@ -84,6 +88,9 @@ CRGB leds[NUM_LEDS]; //Instance
 #define MAGNETIC2 9
 //buzzer
 #define BUZZER 10
+
+//timer variables
+//unsigned long left_time = 0;
 
 //Struct Sensores
 struct SENSOR_STRUCT{

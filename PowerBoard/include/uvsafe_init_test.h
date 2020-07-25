@@ -1,3 +1,11 @@
+
+/*
+ *  by: MRO for UVSA GROUP
+ *  Todos los derechos reservados
+ *  Winnipeg, Manitoba. Canada. Julio 2020
+ */
+
+
 void init_test(Adafruit_MCP23017 gpio){
   int t_ON = 500;
   int t_OFF = 100;
