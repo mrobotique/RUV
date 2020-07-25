@@ -52,15 +52,18 @@ void setup() {
         //Despues, checamos para el boton deadman 1. Si este esta apretado, entonces
         //el estado de "BUZZER_ENABLED" cambia, dependiend de su estado actual,
         // de falso a verdadero o viceversa.
+        BUZZER_ENABLED_BUFFER = EEPROM.read(addr);
         if (!digitalRead(DEADMAN1_Pin)){
              configure_buzzer = true;
              if (EEPROM.read(addr) == false){
                BUZZER_ENABLED_BUFFER = true;
+               EEPROM.write(addr, true);
              }
              else{
                BUZZER_ENABLED_BUFFER = false;
+               EEPROM.write(addr, false);
              }
-             EEPROM.write(addr, BUZZER_ENABLED_BUFFER);
+
          }
         if (run_test || configure_buzzer){
         //Corre el test solo si el boton esta activado
