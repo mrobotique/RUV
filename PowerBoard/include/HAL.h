@@ -85,6 +85,9 @@ CRGB leds[NUM_LEDS]; //Instance
 //buzzer
 #define BUZZER 10
 
+//timer variables
+//unsigned long left_time = 0;
+
 //Struct Sensores
 struct SENSOR_STRUCT{
   int deadman1_sw;
