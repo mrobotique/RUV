@@ -1,8 +1,10 @@
+
 /*
- *  by: MRO for UVSA
+ *  by: MRO for UVSA GROUP
  *  Todos los derechos reservados
- *  Aguascalientes, Mexico. Mayo 2020
+ *  Winnipeg, Manitoba. Canada. Julio 2020
  */
+
 #include <avr/wdt.h>
 #include <Arduino.h>
 #include <SoftwareSerial.h>
