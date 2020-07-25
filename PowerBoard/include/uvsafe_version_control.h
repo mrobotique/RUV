@@ -1,3 +1,11 @@
+
+/*
+ *  by: MRO for UVSA GROUP
+ *  Todos los derechos reservados
+ *  Winnipeg, Manitoba. Canada. Julio 2020
+ */
+
+
 /***********************
 *
 * SOFTWARE VERSION E IDENTIFICACION DE TARJETA

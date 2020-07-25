@@ -1,10 +1,8 @@
-
 /*
- *  by: MRO for UVSA Group
+ *  by: MRO for UVSA GROUP
  *  Todos los derechos reservados
- *  Aguascalientes, Mexico. Mayo 2020
+ *  Winnipeg, Manitoba. Canada. Julio 2020
  */
-
 //Prototipo
 void uvsafe_timer_Complete(void);
 

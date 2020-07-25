@@ -1,7 +1,10 @@
 /*** Definiciones de Usuario
-by: MRO for IWI
-Todos los derechos reservados
-Aguascalientes, Mexico. Mayo 2020
+
+/*
+ *  by: MRO for UVSA GROUP
+ *  Todos los derechos reservados
+ *  Winnipeg, Manitoba. Canada. Julio 2020
+ *
 
 En este archivo se definen todos los valores usados en todos los modulos
 relacionados con este programa. Si el usuario necesitara cambiar/modificar/actualizar

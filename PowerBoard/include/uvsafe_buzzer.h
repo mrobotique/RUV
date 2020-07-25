@@ -1,3 +1,10 @@
+
+/*
+ *  by: MRO for UVSA GROUP
+ *  Todos los derechos reservados
+ *  Winnipeg, Manitoba. Canada. Julio 2020
+ */
+
 #define BEEP_ON 1
 #define BEEP_OFF 0
 #define ONE_BEEP 2

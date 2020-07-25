@@ -1,9 +1,11 @@
+/*
+ *  by: MRO for UVSA GROUP
+ *  Todos los derechos reservados
+ *  Winnipeg, Manitoba. Canada. Julio 2020
+ */
+
 /*** HAL file
 HAL: Hardware Abstraction Layer
-by: MRO for IWI
-Todos los derechos reservados
-Aguascalientes, Mexico. Mayo 2020
-
 requiere
 https://github.com/cosmikwolf/Bounce2mcp.git
 ***/

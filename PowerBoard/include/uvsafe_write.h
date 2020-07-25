@@ -1,8 +1,10 @@
+
 /*
- *  by: MRO for IWI
+ *  by: MRO for UVSA GROUP
  *  Todos los derechos reservados
- *  Aguascalientes, Mexico. Mayo 2020
+ *  Winnipeg, Manitoba. Canada. Julio 2020
  */
+
 
 
 void write_lamps(LAMP_STRUCT lamp_state, Adafruit_MCP23017 gpio){

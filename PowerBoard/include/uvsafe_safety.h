@@ -1,8 +1,10 @@
+
 /*
- *  by: MRO for IWI
+ *  by: MRO for UVSA GROUP
  *  Todos los derechos reservados
- *  Aguascalientes, Mexico. Mayo 2020
+ *  Winnipeg, Manitoba. Canada. Julio 2020
  */
+
 
 void check_pir(){
         if ((operation_mode != mode_manual) && (operation_mode != mode_boot)){
