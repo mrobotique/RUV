@@ -77,7 +77,7 @@ void setup() {
           }
           if (run_test == true) init_test(gpio);
         }
-        beeper.Trigger(TWO_BEEP);
+        beeper.Trigger(TWO_BEEP);        
         wdt_enable(WDTO_4S);// nunca usar menos de 250 ms si no se va a resetar sin control
         BUZZER_ENABLED = BUZZER_ENABLED_BUFFER;
 }

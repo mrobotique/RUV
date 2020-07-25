@@ -93,10 +93,14 @@ public:
                         break;
                 case 6: //despues de acabar un ciclo bip y shhhhhhhhhh
                         OnTime = 35;
-                        OffTime = 5000;
+                        OffTime = 10000;
                         break;
 
                 }
+        }
+
+        int CurrentMode(void){
+                return mode;
         }
 
         int Update(void)
