@@ -11,17 +11,20 @@ void serialEvent() {
     // recibe el primer byte:
     char inChar = (char)Serial.read();
     // Lo agrega al string:
-    inputString += inChar;
+    if (int(inChar) != 0){
+       inputString += inChar; //Descarta un caracter nulo que envia el bt
+    }
     // Si el caracter que llega es "newline" (\n) 
     // el string esta completo y hacemos algo con el.
     if (inChar == '\n') {
         // Si el aparato esta en manual entonces acepta el dato que viene por el puero serie.
+        
         if (operation_mode == mode_manual){
             DynamicJsonDocument doc(capacity);
             DeserializationError error = deserializeJson(doc, inputString);
-            inputString = "";
             if (error || (sensor_state.magnetic_status != 1)){
                 beeper.Trigger(ERROR);
+                
             }
             else{
                 beeper.Trigger(TWO_BEEP);
@@ -39,6 +42,7 @@ void serialEvent() {
         beeper.Trigger(ONE_BEEP);
         operation_mode = mode_manual;
         }
+    inputString = "";
     }
   }
 }
