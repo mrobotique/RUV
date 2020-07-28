@@ -23,6 +23,7 @@
 #include "uvsafe_manual.h"
 #include "uvsafe_auto.h"
 #include "uvsafe_init_test.h"
+#include "uvsafe_read_serial_1.h"
 
 
 Adafruit_MCP23017 gpio;
@@ -78,6 +79,9 @@ void setup() {
           if (run_test == true) init_test(gpio);
         }
         beeper.Trigger(TWO_BEEP);        
+        // reserva JSON_SERIAL1_BUFFER_SIZE bytes para el JSON de entrada del puerto serie 1 (control BT)
+        //JSON_SERIAL1_BUFFER_SIZE definido en HAL
+        inputString.reserve(JSON_SERIAL1_BUFFER_SIZE);        
         wdt_enable(WDTO_4S);// nunca usar menos de 250 ms si no se va a resetar sin control
         BUZZER_ENABLED = BUZZER_ENABLED_BUFFER;
 }

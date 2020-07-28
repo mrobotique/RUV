@@ -34,8 +34,7 @@ unsigned long fadeDelay = 1; //en mS
 #define MAGNETIC_DEBOUNCE 800 //ms
 #define PIR_DEBOUNCE 100 //ms
 #define DEADMAN_DEBOUNCE 1000 //ms
-#define AUTO_DEBOUNCE 100 //ms
-
+#define AUTO_DEBOUNCE 105 //ms
 
 /*********** PIR ********************/
 #define AFTER_PIR 30000 //[ms] Tiempo para encender las lamparas despues que ningun sensor PIR detecta presencia.

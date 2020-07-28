@@ -12,6 +12,7 @@
 #define CONTINOUS_BEEP 4
 #define POST_PIR 5
 #define FIN_DE_CICLO 6
+#define ERROR 7
 
 bool BUZZER_ENABLED = true;
 
@@ -56,6 +57,9 @@ public:
                     case 6:
                       beeps = 3;
                       break;
+                    case 7:
+                      beeps = 1;
+                      break;
                   default:
                     beeps = 0;
                     break;
@@ -92,8 +96,12 @@ public:
                         OffTime = 900;
                         break;
                 case 6: //despues de acabar un ciclo bip y shhhhhhhhhh
-                        OnTime = 35;
-                        OffTime = 10000;
+                        OnTime = 500;
+                        OffTime = 7000;
+                        break;
+                case 7: //Error
+                        OnTime = 1000;
+                        OffTime = 1;
                         break;
 
                 }
