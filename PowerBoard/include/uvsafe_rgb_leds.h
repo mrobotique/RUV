@@ -213,7 +213,7 @@ void manual_pattern(SENSOR_STRUCT sensors){
                         switch (sensor_state.magnetic_status) {
                           case 0: //los dos sensores magneticos detectaron algo --> el escudo esta puesto, modo manual disponible
                             for(int i=0; i<TOTAL_LEDS; i++) {
-                                    leds[i] = CRGB::Green;
+                                    leds[i] = CRGB::AntiqueWhite;
                             }
                             break;
 
