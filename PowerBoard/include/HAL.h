@@ -91,6 +91,7 @@ CRGB leds[NUM_LEDS]; //Instance
 
 //timer variables
 //unsigned long left_time = 0;
+int pre_desinfeccion_count;
 
 //Struct Sensores
 struct SENSOR_STRUCT{
@@ -127,6 +128,26 @@ struct LAMP_STRUCT{
   int lamp_deadman;
   int lamp_auto;
 }lamp_state;
+
+//Struct mascara
+struct MASK_STRUCT{
+  int flag;
+  int buzzer;
+  int lamp_1;
+  int lamp_2;
+  int lamp_3;
+  int lamp_4;
+  int lamp_5;
+  int lamp_6;
+}mascara;
+
+//Variables  EEPROM
+int eeprom_mask = 0;
+int mask_byte = 0;
+int addr = 0; //eeprom address to save the buzzer data
+int addr_hwd = 1; //eeprom address of the hardware mask
+
+
 
 //The start button is kind of special so,
 //It is intialized in a sightly different way

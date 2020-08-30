@@ -12,12 +12,12 @@ void write_lamps(LAMP_STRUCT lamp_state, Adafruit_MCP23017 gpio){
            Esta funcion recibe el estado actual de las lamparas y lo transmite
            a la gpio
          */
-        gpio.digitalWrite(LAMP1, lamp_state.lamp_1);
-        gpio.digitalWrite(LAMP2, lamp_state.lamp_2);
-        gpio.digitalWrite(LAMP3, lamp_state.lamp_3);
-        gpio.digitalWrite(LAMP4, lamp_state.lamp_4);
-        gpio.digitalWrite(LAMP5, lamp_state.lamp_5);
-        gpio.digitalWrite(LAMP6, lamp_state.lamp_6);
+        gpio.digitalWrite(LAMP1, lamp_state.lamp_1 * mascara.lamp_1);
+        gpio.digitalWrite(LAMP2, lamp_state.lamp_2 * mascara.lamp_2);
+        gpio.digitalWrite(LAMP3, lamp_state.lamp_3 * mascara.lamp_3);
+        gpio.digitalWrite(LAMP4, lamp_state.lamp_4 * mascara.lamp_4);
+        gpio.digitalWrite(LAMP5, lamp_state.lamp_5 * mascara.lamp_5);
+        gpio.digitalWrite(LAMP6, lamp_state.lamp_6 * mascara.lamp_6);
         gpio.digitalWrite(LAMP_DEADMAN,lamp_state.lamp_deadman);
         gpio.digitalWrite(LAMP_AUTO, lamp_state.lamp_auto);
 }

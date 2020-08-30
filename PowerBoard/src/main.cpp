@@ -35,12 +35,12 @@ ReadSensors sensors(sensor_state, gpio);
 void setup() {
         bool run_test = false;
         bool configure_buzzer = false;
-        int addr = 0; //eeprom address to save the data
+        //EEprom Addresses defined on HAL.h
         bool BUZZER_ENABLED_BUFFER;
 
         wdt_disable(); //deshabilitar watchdog para no tener interrupciones
         init_gpio(gpio);
-        Serial.begin(115200); //Regular serial port -- Terminal/debug/program
+        Serial.begin(9600); //Regular serial port -- Terminal/debug/program
         GUISerial.begin(115200); //Serial port for GUI
         operation_mode = mode_boot;
         activity_led.Update_mode(3);
@@ -56,6 +56,8 @@ void setup() {
         //el estado de "BUZZER_ENABLED" cambia, dependiend de su estado actual,
         // de falso a verdadero o viceversa.
         BUZZER_ENABLED_BUFFER = EEPROM.read(addr);
+        eeprom_mask = EEPROM.read(addr_hwd);
+        
         if (!digitalRead(DEADMAN1_Pin)){
              configure_buzzer = true;
              if (EEPROM.read(addr) == false){

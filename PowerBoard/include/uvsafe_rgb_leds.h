@@ -121,12 +121,15 @@ void boot_pattern(){
 
 void init_pattern(){
 
+        if (pre_desinfeccion_count == 0) pre_desinfeccion_count ++ ;
+
         if ((millis() - last_millis) > init_time_segment) {
                 last_millis = millis();
                 if (LedCount<TOTAL_LEDS) {
                         leds[LedCount] = CRGB::DeepSkyBlue;
                         FastLED.show(int(max_intensity/3.0)); //estaba muy intenso
                 }
+                pre_desinfeccion_count ++;
                 LedCount++;
                 if (LedCount < TOTAL_LEDS - 3) beeper.Trigger(ONE_BEEP);
                 if (LedCount >= TOTAL_LEDS - 3) beeper.Trigger(TWO_BEEP);
@@ -134,6 +137,7 @@ void init_pattern(){
 
                 if (LedCount > TOTAL_LEDS) {
                         LedCount = 0;
+                        pre_desinfeccion_count = 0;
                         intensity = min_intensity; //intensity cant be < min_intensity
                         beeper.Trigger(BEEP_OFF);
                         operation_mode = mode_auto_on;
