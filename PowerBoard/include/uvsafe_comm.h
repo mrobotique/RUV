@@ -22,7 +22,7 @@ public:
 void Update (SENSOR_STRUCT sensor_state)
 {       //Check size calculator for the array at:
        //https://arduinojson.org/v6/assistant/
-        const size_t capacity = JSON_ARRAY_SIZE(24) + JSON_OBJECT_SIZE(1) + 45;
+        const size_t capacity = JSON_ARRAY_SIZE(18) + JSON_OBJECT_SIZE(1) + 45;
         DynamicJsonDocument doc(capacity);
         // check to see if it's time to send the data
         unsigned long currentMillis = millis();
@@ -41,14 +41,12 @@ void Update (SENSOR_STRUCT sensor_state)
                 data.add(sensor_state.pir_4);
                 data.add(sensor_state.magnetic_1);
                 data.add(sensor_state.magnetic_2);
-                data.add(sensor_state.lamp_1);
-                data.add(sensor_state.lamp_2);
-                data.add(sensor_state.lamp_3);
-                data.add(sensor_state.lamp_4);
-                data.add(sensor_state.lamp_5);
-                data.add(sensor_state.lamp_6);
-                data.add(sensor_state.lamp_deadman);
-                data.add(sensor_state.lamp_auto);
+                //Comprimir datos antes de enviarlos
+                int byte_lamps = sensor_state.lamp_1 + sensor_state.lamp_2 * 2 + 
+                sensor_state.lamp_3 * 4 + sensor_state.lamp_4 * 8 + sensor_state.lamp_5 * 16 + 
+                sensor_state.lamp_6 * 32 + sensor_state.lamp_deadman * 64 + sensor_state.lamp_auto * 128;
+                data.add(byte_lamps);
+                data.add(HOROMETRO);
                 data.add(BUZZER_ENABLED);
                 data.add(operation_mode);
                 data.add(tiempo_restante);

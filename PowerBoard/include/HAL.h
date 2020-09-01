@@ -201,3 +201,5 @@ FastLED.addLeds<WS2812B,LED_PIN,EOrder::GRB>(leds, NUM_LEDS);
 //Serial port Recepcion
 #define JSON_SERIAL1_BUFFER_SIZE 20
 String inputString = "";         // a String para guardar el JSON de entrada
+
+int HOROMETRO = 20000;

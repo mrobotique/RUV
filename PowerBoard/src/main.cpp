@@ -40,8 +40,8 @@ void setup() {
 
         wdt_disable(); //deshabilitar watchdog para no tener interrupciones
         init_gpio(gpio);
-        Serial.begin(9600); //Regular serial port -- Terminal/debug/program
-        GUISerial.begin(115200); //Serial port for GUI
+        Serial.begin(19200); //Regular serial port -- Terminal/debug/program
+        GUISerial.begin(19200); //Serial port for GUI
         operation_mode = mode_boot;
         activity_led.Update_mode(3);
         auto_button.debounceTime = AUTO_DEBOUNCE;
@@ -57,7 +57,7 @@ void setup() {
         // de falso a verdadero o viceversa.
         BUZZER_ENABLED_BUFFER = EEPROM.read(addr);
         eeprom_mask = EEPROM.read(addr_hwd);
-        
+        mask_byte = eeprom_mask;
         if (!digitalRead(DEADMAN1_Pin)){
              configure_buzzer = true;
              if (EEPROM.read(addr) == false){

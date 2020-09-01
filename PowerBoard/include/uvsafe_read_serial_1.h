@@ -45,7 +45,6 @@ void serialEvent() {
           if (mask_byte != eeprom_mask)
           {
             EEPROM.write(addr_hwd, mask_byte);
-            delay(0.05);
             eeprom_mask = EEPROM.read(addr_hwd);
           }
           if ((mascara.buzzer == 1) && !BUZZER_ENABLED)
