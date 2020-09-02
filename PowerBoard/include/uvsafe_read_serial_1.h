@@ -7,6 +7,17 @@
 //const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_SERIAL1_BUFFER_SIZE + 1; //JSON_SERIAL1_BUFFER_SIZE definido en HAL.h
 const size_t capacity = 2*JSON_ARRAY_SIZE(2) + JSON_OBJECT_SIZE(2) + 20;
 DynamicJsonDocument doc(capacity);
+void applyMask(int byte_buffer, int flag){
+  mascara.flag = flag; 
+  mascara.buzzer = byte_buffer & B00000001; 
+  mascara.lamp_1 = byte_buffer & B00000010;
+  mascara.lamp_2 = byte_buffer & B00000100;
+  mascara.lamp_3 = byte_buffer & B00001000;
+  mascara.lamp_4 = byte_buffer & B00010000;
+  mascara.lamp_5 = byte_buffer & B00100000;
+  mascara.lamp_6 = byte_buffer & B01000000;
+
+}
 
 void serialEvent() {
   while (Serial.available()) {
@@ -32,14 +43,7 @@ void serialEvent() {
         
         if (mask[0] == 1){
           int byte_buffer = mask[1]; 
-          mascara.flag = mask[0];
-          mascara.buzzer = byte_buffer & B00000001; 
-          mascara.lamp_1 = byte_buffer & B00000010;
-          mascara.lamp_2 = byte_buffer & B00000100;
-          mascara.lamp_3 = byte_buffer & B00001000;
-          mascara.lamp_4 = byte_buffer & B00010000;
-          mascara.lamp_5 = byte_buffer & B00100000;
-          mascara.lamp_6 = byte_buffer & B01000000;
+          applyMask(byte_buffer,mask[0]);
           //Calcula lo que se debe grabar en el eeprom 
           mask_byte = mask[1];
           if (mask_byte != eeprom_mask)

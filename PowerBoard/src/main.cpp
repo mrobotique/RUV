@@ -58,6 +58,8 @@ void setup() {
         BUZZER_ENABLED_BUFFER = EEPROM.read(addr);
         eeprom_mask = EEPROM.read(addr_hwd);
         mask_byte = eeprom_mask;
+        applyMask(mask_byte,1);
+        
         if (!digitalRead(DEADMAN1_Pin)){
              configure_buzzer = true;
              if (EEPROM.read(addr) == false){
