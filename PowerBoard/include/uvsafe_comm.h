@@ -52,7 +52,7 @@ void Update (SENSOR_STRUCT sensor_state)
                 data.add(tiempo_restante);
                 data.add(mask_byte);
                 data.add(pre_desinfeccion_count); 
-                data.add(sensor_state.pir_status);
+                data.add(state_machine);
                 serializeJson(doc, Serial);
                 Serial.println();
         }

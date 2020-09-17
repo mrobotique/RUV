@@ -101,6 +101,7 @@ void Update(uvs_mode _current_mode, SENSOR_STRUCT sensors){
 
 
 void boot_pattern(){
+        state_machine = sm_booting;
         for (int i=0; i<NUM_LEDS; i++) {
                 for (int j=0; j<NUM_LEDS; j++) leds[j] = CRGB::Black;
                 leds[i] = CRGB::Purple;
@@ -120,13 +121,14 @@ void boot_pattern(){
 }
 
 void init_pattern(){
-
+        state_machine = sm_countdown;
         if (pre_desinfeccion_count == 0) pre_desinfeccion_count ++ ;
 
         if ((millis() - last_millis) > init_time_segment) {
                 last_millis = millis();
                 if (LedCount<TOTAL_LEDS) {
                         leds[LedCount] = CRGB::DeepSkyBlue;
+                        
                         FastLED.show(int(max_intensity/3.0)); //estaba muy intenso
                 }
                 pre_desinfeccion_count ++;
@@ -155,11 +157,13 @@ void auto_pattern(){
                 for (int i=0; i<TOTAL_LEDS; i++) {
                         if(sensor_state.pir_status != 0) {
                                 if(sensor_state.pir_transition != 0){
+                                        state_machine = sm_pirdetection;
                                         //Si los PIR detectan a alguien, entonces amarillo y la deteccion esta activa
                                         leds[i] = 0xCFCB00; //amarillo bob esponja
                                         beeper.Trigger(CONTINOUS_BEEP);
                                   }
                                 else{ //La deteccion no esta activa y pronto se van a reiniciar la UV
+                                        state_machine = sm_postpir;
                                         leds[i] = CRGB::DeepSkyBlue;
                                         beeper.Trigger(POST_PIR);
                                     }
@@ -168,6 +172,7 @@ void auto_pattern(){
                                 //Si los PIR estan  ok entonces es morado
                                 beeper.Trigger(BEEP_OFF);
                                 leds[i] = CRGB::Purple;
+                                state_machine = sm_sanitizing;
                         }
                 }
 
@@ -189,6 +194,7 @@ void auto_pattern(){
 void manual_push_pattern(){
         if ((millis() - last_millis) > fadeDelay) {
                 last_millis = millis();
+                state_machine = sm_manualactive;
 
                 for (int i=0; i<TOTAL_LEDS; i++) {
                         leds[i] = CRGB::Purple;
@@ -216,18 +222,22 @@ void manual_pattern(SENSOR_STRUCT sensors){
                 if(timer_count == 0) {
                         switch (sensor_state.magnetic_status) {
                           case 0: //los dos sensores magneticos detectaron algo --> el escudo esta puesto, modo manual disponible
+                            state_machine = sm_manualready;
                             for(int i=0; i<TOTAL_LEDS; i++) {
                                     leds[i] = CRGB::AntiqueWhite;
                             }
                             break;
 
                           case 1: //los dos sensores magneticos NO detectan nada --> el escudo no esta puesto, modo auto disponible
+                            state_machine = sm_autoready;
+                            pre_desinfeccion_count = 0;
                             for(int i=0; i<TOTAL_LEDS; i++) {
                                     leds[i] = CRGB::OrangeRed;
                             }
                             break;
 
                           default: //para los demas casos (error)
+                            state_machine = sm_error;
                             for(int i=0; i<TOTAL_LEDS; i++) {
                                     leds[i] = CRGB::Red;
                             }
@@ -236,7 +246,7 @@ void manual_pattern(SENSOR_STRUCT sensors){
                 }
 
                 else{
-
+                        state_machine = sm_manualtimesetup;
                         for (unsigned long i=0; i<timer_count; i++) {
                                 leds[i] = CRGB::DarkMagenta;
                         }
@@ -250,6 +260,7 @@ void manual_pattern(SENSOR_STRUCT sensors){
 
         else{ //si llegamos aqui por que el PIR llego a un timeout, entonces avisa (amarillo bob esponja)
               // y espera a que se resetie el color apretando cualquier boton
+                state_machine = sm_abortedpir;
                 beeper.Trigger(BEEP_OFF);
                 if ((digitalRead(DEADMAN1_Pin) == 0) || (digitalRead(DEADMAN2_Pin) == 0) || (auto_button.clicks != 0)) pir_timeout = false;
                 for(int i=0; i<TOTAL_LEDS; i++) {

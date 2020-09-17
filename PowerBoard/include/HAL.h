@@ -56,6 +56,22 @@ bool pir_timeout = false; //el valor se actualiza -> true en uvsafe_safety.h
 #define LED_PIN     7
 #define NUM_LEDS    18
 #define BRIGHTNESS  32
+int led_status = 0;
+
+enum statemachine{
+  sm_booting,         //0
+  sm_countdown,       //1
+  sm_sanitizing,      //2
+  sm_pirdetection,    //3
+  sm_postpir,         //4
+  sm_manualactive,    //5
+  sm_manualready,     //6
+  sm_autoready,       //7
+  sm_error,           //8
+  sm_manualtimesetup, //9
+  sm_abortedpir,      //10
+} state_machine;
+
 CRGB leds[NUM_LEDS]; //Instance
 
 //PIR sensors. Connected directly to the Arduino board
