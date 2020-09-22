@@ -22,7 +22,7 @@ public:
 void Update (SENSOR_STRUCT sensor_state)
 {       //Check size calculator for the array at:
        //https://arduinojson.org/v6/assistant/
-        const size_t capacity = JSON_ARRAY_SIZE(19) + JSON_OBJECT_SIZE(1) + 45;
+        const size_t capacity = JSON_ARRAY_SIZE(20) + JSON_OBJECT_SIZE(1) + 47;
         DynamicJsonDocument doc(capacity);
         // check to see if it's time to send the data
         unsigned long currentMillis = millis();
@@ -53,6 +53,7 @@ void Update (SENSOR_STRUCT sensor_state)
                 data.add(mask_byte);
                 data.add(pre_desinfeccion_count); 
                 data.add(state_machine);
+                data.add(nuevo_tiempo_exposicion);
                 serializeJson(doc, Serial);
                 Serial.println();
         }
