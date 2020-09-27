@@ -58,8 +58,7 @@ void setup() {
         BUZZER_ENABLED_BUFFER = EEPROM.read(addr);
         eeprom_mask = EEPROM.read(addr_hwd);
         mask_byte = eeprom_mask;
-        applyMask(mask_byte,1);
-        
+       
         if (!digitalRead(DEADMAN1_Pin)){
              configure_buzzer = true;
              if (EEPROM.read(addr) == false){
@@ -88,6 +87,16 @@ void setup() {
         inputString.reserve(JSON_SERIAL1_BUFFER_SIZE);        
         wdt_enable(WDTO_4S);// nunca usar menos de 250 ms si no se va a resetar sin control
         BUZZER_ENABLED = BUZZER_ENABLED_BUFFER;
+        
+        if (BUZZER_ENABLED)
+        {
+          mask_byte = mask_byte | B00000001;
+        }
+        else
+        {
+          mask_byte = mask_byte & B11111110;
+        }
+        applyMask(mask_byte,1);
 }
 
 void loop() {
